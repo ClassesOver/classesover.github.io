@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="使用Inherited Widget 来共享地理位置信息某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的location插件。相反的是，我们可使用Inherited Widget控件来在多个控件之间共享数据。 从命令行敲入如下代码flutter create -t package location_context -t参数是选择模版，-">
+<meta name="description" content="使用Inherited Widget 来共享地理位置信息英文地址: Sharing Location using Inherited Widget 某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的location插件。相反的是，我们可使用Inherited Widget控件来在多个控件之间共享数据。 从命令行敲入如下代码flutter">
 <meta name="keywords" content="flutter">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用Inherited Widget 来共享地理位置信息">
 <meta property="og:url" content="http://yoursite.com/2019/01/02/使用Inherited Widget 来共享地理位置信息/index.html">
 <meta property="og:site_name" content="Camera&#39;s Blog">
-<meta property="og:description" content="使用Inherited Widget 来共享地理位置信息某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的location插件。相反的是，我们可使用Inherited Widget控件来在多个控件之间共享数据。 从命令行敲入如下代码flutter create -t package location_context -t参数是选择模版，-">
+<meta property="og:description" content="使用Inherited Widget 来共享地理位置信息英文地址: Sharing Location using Inherited Widget 某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的location插件。相反的是，我们可使用Inherited Widget控件来在多个控件之间共享数据。 从命令行敲入如下代码flutter">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-02T08:29:17.432Z">
+<meta property="og:updated_time" content="2019-01-02T08:32:44.861Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Inherited Widget 来共享地理位置信息">
-<meta name="twitter:description" content="使用Inherited Widget 来共享地理位置信息某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的location插件。相反的是，我们可使用Inherited Widget控件来在多个控件之间共享数据。 从命令行敲入如下代码flutter create -t package location_context -t参数是选择模版，-">
+<meta name="twitter:description" content="使用Inherited Widget 来共享地理位置信息英文地址: Sharing Location using Inherited Widget 某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的location插件。相反的是，我们可使用Inherited Widget控件来在多个控件之间共享数据。 从命令行敲入如下代码flutter">
 
 
 
@@ -320,7 +320,8 @@
       
 
       
-        <h3 id="使用Inherited-Widget-来共享地理位置信息"><a href="#使用Inherited-Widget-来共享地理位置信息" class="headerlink" title="使用Inherited Widget 来共享地理位置信息"></a>使用Inherited Widget 来共享地理位置信息</h3><p>某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的<code>location</code>插件。相反的是，我们可使用<code>Inherited Widget</code>控件来在多个控件之间共享数据。</p>
+        <h3 id="使用Inherited-Widget-来共享地理位置信息"><a href="#使用Inherited-Widget-来共享地理位置信息" class="headerlink" title="使用Inherited Widget 来共享地理位置信息"></a>使用Inherited Widget 来共享地理位置信息</h3><p>英文地址: <a href="https://flutter.institute/sharing-location-using-inherited-widget/" target="_blank" rel="noopener">Sharing Location using Inherited Widget</a></p>
+<p>某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的<code>location</code>插件。相反的是，我们可使用<code>Inherited Widget</code>控件来在多个控件之间共享数据。</p>
 <p>从命令行敲入如下代码<code>flutter create -t package location_context</code> -t参数是选择模版，-t package意思是快速创建一个模块包的模版样本代码。</p>
 <h4 id="第一步：导入依赖"><a href="#第一步：导入依赖" class="headerlink" title="第一步：导入依赖"></a>第一步：导入依赖</h4><p>在<code>pubspec.yaml</code>文件的<code>dependences:</code></p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">location: ^1.3.4</span><br><span class="line">quiver: ^2.0.1</span><br></pre></td></tr></table></figure>
@@ -377,7 +378,7 @@
 <p>最后，我们将会利用这些信息来实际构建，下面这个地方是我们实际使用<code>Inherited Widget</code>这个代理控件的地方：</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Widget bulid(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> LocationContext._(</span><br><span class="line">        lastLocation:_lastLocation,</span><br><span class="line">        currentLocation: _currentLocation,</span><br><span class="line">        error:_error,</span><br><span class="line">        child:widget.child <span class="comment">// widget == _LocationContextWrapper，其为getter属性</span></span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>简单地说，我们只是构建了<code>Inherited Widget</code>，然后将在<code>State</code>中收集到的数据传给它，同时<code>Inherited Widget</code>包裹<code>child</code>，<code>Inherited Widget</code>控件为代理控件，本身不会构建子控件，相反会将<code>child</code>成员控件作为其子控件。这就意味着无论何时我们获取一个新的位置以及更新我们的状态，就会传入新的信息给<code>LocationContext</code>，进而子节点的控件能够访问到这些数据。</p>
-<p>此外，我缺少了些重要的东西，一个使用<code>_LocationContextWrapper</code>的方法，因为它是包内私有的，我们需要添加一个方法来帮助我们使用它，我添加一个公有的静态方法到<code>LocationContext</code>中。</p>
+<p>此外，我们缺少了些重要的东西，一个使用<code>_LocationContextWrapper</code>的方法，因为它是包内私有的，我们需要添加一个方法来帮助我们使用它，我添加一个公有的静态方法到<code>LocationContext</code>中。</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> Widget around(Widget child, &#123;Key key&#125;) &#123;</span><br><span class="line">    retutn _locationContextWrapper(child:child,key:key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
