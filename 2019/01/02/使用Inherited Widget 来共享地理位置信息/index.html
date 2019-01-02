@@ -79,14 +79,18 @@
 
 
 
+<meta name="description" content="使用Inherited Widget 来共享地理位置信息某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的location插件。相反的是，我们可使用Inherited Widget控件来在多个控件之间共享数据。 从命令行敲入如下代码flutter create -t package location_context -t参数是选择模版，-">
 <meta name="keywords" content="flutter">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Camera&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hello">
+<meta property="og:url" content="http://yoursite.com/2019/01/02/使用Inherited Widget 来共享地理位置信息/index.html">
 <meta property="og:site_name" content="Camera&#39;s Blog">
+<meta property="og:description" content="使用Inherited Widget 来共享地理位置信息某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的location插件。相反的是，我们可使用Inherited Widget控件来在多个控件之间共享数据。 从命令行敲入如下代码flutter create -t package location_context -t参数是选择模版，-">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-02T08:25:32.732Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Camera&#39;s Blog">
+<meta name="twitter:title" content="hello">
+<meta name="twitter:description" content="使用Inherited Widget 来共享地理位置信息某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的location插件。相反的是，我们可使用Inherited Widget控件来在多个控件之间共享数据。 从命令行敲入如下代码flutter create -t package location_context -t参数是选择模版，-">
 
 
 
@@ -116,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/2019/01/02/使用Inherited Widget 来共享地理位置信息/">
 
 
 
 
 
-  <title>Camera's Blog</title>
+  <title>hello | Camera's Blog</title>
   
 
 
@@ -141,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -235,9 +238,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -267,9 +270,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/02/使用Inherited Widget 来共享地理位置信息/" itemprop="url">hello</a></h2>
+          <h2 class="post-title" itemprop="name headline">hello</h2>
         
 
         <div class="post-meta">
@@ -319,9 +320,7 @@
       
 
       
-        
-          
-            <h3 id="使用Inherited-Widget-来共享地理位置信息"><a href="#使用Inherited-Widget-来共享地理位置信息" class="headerlink" title="使用Inherited Widget 来共享地理位置信息"></a>使用Inherited Widget 来共享地理位置信息</h3><p>某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的<code>location</code>插件。相反的是，我们可使用<code>Inherited Widget</code>控件来在多个控件之间共享数据。</p>
+        <h3 id="使用Inherited-Widget-来共享地理位置信息"><a href="#使用Inherited-Widget-来共享地理位置信息" class="headerlink" title="使用Inherited Widget 来共享地理位置信息"></a>使用Inherited Widget 来共享地理位置信息</h3><p>某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的<code>location</code>插件。相反的是，我们可使用<code>Inherited Widget</code>控件来在多个控件之间共享数据。</p>
 <p>从命令行敲入如下代码<code>flutter create -t package location_context</code> -t参数是选择模版，-t package意思是快速创建一个模块包的模版样本代码。</p>
 <h4 id="第一步：导入依赖"><a href="#第一步：导入依赖" class="headerlink" title="第一步：导入依赖"></a>第一步：导入依赖</h4><p>在<code>pubspec.yaml</code>文件的<code>dependences:</code></p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">location: ^1.3.4</span><br><span class="line">quiver: ^2.0.1</span><br></pre></td></tr></table></figure>
@@ -381,8 +380,6 @@
 <p>此外，我缺少了些重要的东西，一个使用<code>_LocationContextWrapper</code>的方法，因为它是包内私有的，我们需要添加一个方法来帮助我们使用它，我添加一个公有的静态方法到<code>LocationContext</code>中。</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> Widget around(Widget child, &#123;Key key&#125;) &#123;</span><br><span class="line">    retutn _locationContextWrapper(child:child,key:key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-          
-        
       
     </div>
     
@@ -399,12 +396,12 @@
       
 
       
+      
+      
 
       
 
       
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -414,10 +411,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -425,6 +423,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -445,8 +447,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -488,6 +499,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Inherited-Widget-来共享地理位置信息"><span class="nav-number">1.</span> <span class="nav-text">使用Inherited Widget 来共享地理位置信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一步：导入依赖"><span class="nav-number">1.1.</span> <span class="nav-text">第一步：导入依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二步：-创建代码库"><span class="nav-number">1.2.</span> <span class="nav-text">第二步： 创建代码库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三步：-创建Position类"><span class="nav-number">1.3.</span> <span class="nav-text">第三步： 创建Position类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Location-Context"><span class="nav-number">1.4.</span> <span class="nav-text">创建Location Context</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -635,6 +662,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
