@@ -79,14 +79,18 @@
 
 
 
+<meta name="description" content="在flutter应用程序中分离构建环境英文地址：Separating build environments in Flutter apps 在开发专业的移动应用程度的时候，我们至少需要两个不同的环境：开发环境和生产环境，通过这种方式， 我们可以在开发环境中进行开发及测试新的特性，而不会意外地破坏用户生产环境的任何东西。 样本代码地址：separating_build_environments 最初">
 <meta name="keywords" content="flutter">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Camera&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在flutter应用程序中分离构建环境">
+<meta property="og:url" content="http://yoursite.com/2019/01/02/在flutter应用程序中分离构建环境/index.html">
 <meta property="og:site_name" content="Camera&#39;s Blog">
+<meta property="og:description" content="在flutter应用程序中分离构建环境英文地址：Separating build environments in Flutter apps 在开发专业的移动应用程度的时候，我们至少需要两个不同的环境：开发环境和生产环境，通过这种方式， 我们可以在开发环境中进行开发及测试新的特性，而不会意外地破坏用户生产环境的任何东西。 样本代码地址：separating_build_environments 最初">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-02T12:55:46.299Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Camera&#39;s Blog">
+<meta name="twitter:title" content="在flutter应用程序中分离构建环境">
+<meta name="twitter:description" content="在flutter应用程序中分离构建环境英文地址：Separating build environments in Flutter apps 在开发专业的移动应用程度的时候，我们至少需要两个不同的环境：开发环境和生产环境，通过这种方式， 我们可以在开发环境中进行开发及测试新的特性，而不会意外地破坏用户生产环境的任何东西。 样本代码地址：separating_build_environments 最初">
 
 
 
@@ -116,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/2019/01/02/在flutter应用程序中分离构建环境/">
 
 
 
 
 
-  <title>Camera's Blog</title>
+  <title>在flutter应用程序中分离构建环境 | Camera's Blog</title>
   
 
 
@@ -141,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -235,9 +238,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -267,9 +270,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/02/在flutter应用程序中分离构建环境/" itemprop="url">在flutter应用程序中分离构建环境</a></h2>
+          <h2 class="post-title" itemprop="name headline">在flutter应用程序中分离构建环境</h2>
         
 
         <div class="post-meta">
@@ -341,9 +342,7 @@
       
 
       
-        
-          
-            <h4 id="在flutter应用程序中分离构建环境"><a href="#在flutter应用程序中分离构建环境" class="headerlink" title="在flutter应用程序中分离构建环境"></a>在flutter应用程序中分离构建环境</h4><p>英文地址：<a href="https://iirokrankka.com/2018/03/02/separating-build-environments/" target="_blank" rel="noopener"><strong>Separating build environments in Flutter apps</strong></a></p>
+        <h4 id="在flutter应用程序中分离构建环境"><a href="#在flutter应用程序中分离构建环境" class="headerlink" title="在flutter应用程序中分离构建环境"></a>在flutter应用程序中分离构建环境</h4><p>英文地址：<a href="https://iirokrankka.com/2018/03/02/separating-build-environments/" target="_blank" rel="noopener"><strong>Separating build environments in Flutter apps</strong></a></p>
 <p>在开发专业的移动应用程度的时候，我们至少需要两个不同的环境：开发环境和生产环境，通过这种方式， 我们可以在开发环境中进行开发及测试新的特性，而不会意外地破坏用户生产环境的任何东西。</p>
 <p>样本代码地址：<a href="https://github.com/roughike/separating_build_environments" target="_blank" rel="noopener"><strong>separating_build_environments</strong></a></p>
 <h4 id="最初的应用程序"><a href="#最初的应用程序" class="headerlink" title="最初的应用程序"></a>最初的应用程序</h4><p><strong>lib/main.dart</strong>是flutter在新建一个项目的时候，为我们生成默认程序的入口文件，生成的模版代码如下：</p>
@@ -393,8 +392,6 @@
 </ul>
 <p>为了创建基于Andriod的发布构建，我可以运行<code>flutter build apk -t lib/main_&lt;environment&gt;.dart</code>，并将根据我们环境得到正确的apk，若是iOS上的发布构建，只需将<code>apk</code>替换成<code>ios</code>。</p>
 
-          
-        
       
     </div>
     
@@ -411,213 +408,28 @@
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/02/使用Inherited Widget 来共享地理位置信息/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="编号15077">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Camera's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/02/使用Inherited Widget 来共享地理位置信息/" itemprop="url">使用Inherited Widget 来共享地理位置信息</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-02T15:58:36+08:00">
-                2019-01-02
-              </time>
+              <a href="/2019/01/02/使用Inherited Widget 来共享地理位置信息/" rel="next" title="使用Inherited Widget 来共享地理位置信息">
+                <i class="fa fa-chevron-left"></i> 使用Inherited Widget 来共享地理位置信息
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/flutter/" itemprop="url" rel="index">
-                    <span itemprop="name">flutter</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h3 id="使用Inherited-Widget-来共享地理位置信息"><a href="#使用Inherited-Widget-来共享地理位置信息" class="headerlink" title="使用Inherited Widget 来共享地理位置信息"></a>使用Inherited Widget 来共享地理位置信息</h3><p>英文地址: <a href="https://flutter.institute/sharing-location-using-inherited-widget/" target="_blank" rel="noopener">Sharing Location using Inherited Widget</a></p>
-<p>某些时候，你需要在你的应用程序中多个路由或者控件中使用一个位置信息，在所有需要的地方配置和管理flutter的<code>location</code>插件。相反的是，我们可使用<code>Inherited Widget</code>控件来在多个控件之间共享数据。</p>
-<p>从命令行敲入如下代码<code>flutter create -t package location_context</code> -t参数是选择模版，-t package意思是快速创建一个模块包的模版样本代码。</p>
-<h4 id="第一步：导入依赖"><a href="#第一步：导入依赖" class="headerlink" title="第一步：导入依赖"></a>第一步：导入依赖</h4><p>在<code>pubspec.yaml</code>文件的<code>dependences:</code></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">location: ^1.3.4</span><br><span class="line">quiver: ^2.0.1</span><br></pre></td></tr></table></figure>
-<p>这个<code>location</code>插件用于与GPS硬件进行交互，来获取设备真实的位置信息用于共享数据。</p>
-<p>这个<code>quiver</code>提供的hashObjects便捷方法，将用于创建<code>Position</code>类的hashCode。备注：flutter内部也使用这个包，所以我们应该确保版本同步，如果依赖发生冲突，将会产生一个警告。</p>
-<p>当我们在<code>pubspec.yaml</code>文件中添加这些依赖后，运行<code>flutter packages get</code>来下载安装获取这些依赖包。    </p>
-<h4 id="第二步：-创建代码库"><a href="#第二步：-创建代码库" class="headerlink" title="第二步： 创建代码库"></a>第二步： 创建代码库</h4><p>打开<code>lib/location_context.dart</code>，这个是我们包的入口，除了<code>library</code>第一行行外，替换掉生成默认的样本代码。</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:async'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/serivces.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:location/location.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:quiver/core.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">part</span> <span class="string">'src/postion.dart'</span>;</span><br><span class="line"><span class="keyword">part</span> <span class="string">'src/context.dart'</span>;</span><br></pre></td></tr></table></figure>
-<p>该文件是我们包的入口，并且使用<code>part</code>来导入我们其他的文件，我们所有的导入都放到这个文件里面，即使我们不在这个文件中使用，这将会<code>part</code>的文件中使用。</p>
-<p>使用<code>part</code>可以允许我们将一个库分割成多个dart文件。因为它们全部都是是该库的一部分（同一个库），私有的变量也可以在所有指定的文件中访问到，提到这里是因为<code>Position</code>有个私有的构造函数，希望在<code>LocationContext</code>中也能使用到。</p>
-<h4 id="第三步：-创建Position类"><a href="#第三步：-创建Position类" class="headerlink" title="第三步： 创建Position类"></a>第三步： 创建Position类</h4><p>创建<code>lib/src/position.dart</code>，用来定义<code>Position</code>类，用于装载携带我们的位置数据。<code>location</code>插件将会返回返回一个Map对象。之后我们将会使用这个对象来初始化我们的<code>Position</code>实例。</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">part</span> of location_context; <span class="comment">// 与part 是成对出现的，表示在该库内</span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Position</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">double</span> latitude; <span class="comment">// 纬度</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">double</span> longitude; <span class="comment">// 经度</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">double</span> accuracy; <span class="comment">// 精度</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">double</span> altitude; <span class="comment">//海拔高度</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">double</span> speed; <span class="comment">//速度</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">double</span> speedAccuracy; <span class="comment">//速度精度</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">final</span> _hashCode; <span class="comment">// 私有成员变量</span></span><br><span class="line">    <span class="comment">// 构造参数</span></span><br><span class="line">    Position(&#123;<span class="keyword">this</span>.latitude,<span class="keyword">this</span>.longitude,<span class="keyword">this</span>.accuracy,</span><br><span class="line">             <span class="keyword">this</span>.altitude,<span class="keyword">this</span>.speed,<span class="keyword">this</span>.speedAccuracy&#125;):</span><br><span class="line">    		_hashCode = hashObjects([latitude,longitude,accuracy,</span><br><span class="line">                                     altitude,speed,speedAccuracy])</span><br><span class="line">    <span class="comment">// 命名构造函数，私有，保证只有本库能够访问到</span></span><br><span class="line">    Position._fromMap(<span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">double</span>&gt; data)</span><br><span class="line">      : <span class="keyword">this</span>(</span><br><span class="line">          latitude: data[<span class="string">'latitude'</span>],</span><br><span class="line">          longitude: data[<span class="string">'longitude'</span>],</span><br><span class="line">          accuracy: data[<span class="string">'accuracy'</span>],</span><br><span class="line">          altitude: data[<span class="string">'altitude'</span>],</span><br><span class="line">          speed: data[<span class="string">'speed'</span>],</span><br><span class="line">          speedAccuracy: data[<span class="string">'speed_accuracy'</span>],</span><br><span class="line">        );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>所有的这些属性都是<code>location</code>插件会返回的数据项，我们也定义了一个构造函数来让我们能够手动地定义每个属性。</p>
-<p>因为所有的属性变量是<code>final</code>，运行时不可变，我也将会使用<code>Quiver的hashObjects</code>方法来计算我们的_hashCode，这样不需要每次需要的时候来计算它，因为它不会变。</p>
-<p>此外，我们还需要能够与其他对象进行比较，以及能够优雅地以字符串的形式输出这些对象用于调试等等，在_fromMap构造函数下添加如下代码：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> <span class="keyword">operator</span> ==(<span class="keyword">dynamic</span> other) &#123;</span><br><span class="line">    <span class="keyword">if</span> (other <span class="keyword">is</span>! Position) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">return</span> hashCode == other.hashCode;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@override</span></span><br><span class="line"><span class="built_in">int</span> <span class="keyword">get</span> hashCode =&gt; _hashCode; <span class="comment">//getter属性</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@overrive</span></span><br><span class="line"><span class="built_in">String</span> toString() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Position(<span class="subst">$latitude</span>,<span class="subst">$longitude</span>,<span class="subst">$accuracy</span>,<span class="subst">$speed</span>,<span class="subst">$speedAccuracy</span>)'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>首先我们重写了我们的<code>==</code>运算符，来做一个比较的运算，通过比较<code>this</code>和<code>other</code>的<code>hashCode</code>来判断它们包含的值是否一致，如果hashCode的值一致，那么它们将包含相同的数据。</p>
-<h4 id="创建Location-Context"><a href="#创建Location-Context" class="headerlink" title="创建Location Context"></a>创建Location Context</h4><p>创建<code>lib/src/context.dart</code>，该文件将会包含<code>Inherited Widget</code>来实现我们的魔法。当我们创建一个控件的时候，我需要考虑一下几点：</p>
-<ol>
-<li>为了单元测试，我们需要能够从该包中<code>mock</code>这个<code>Location</code>对象。</li>
-<li>我们需要实际创建这个继承的控件，来共享我们的存储的数据。</li>
-<li>我们能够更新以及存储这些共享的数据值。</li>
-</ol>
-<p>我们在第二步中，在</p>
-<p><strong>Location 依赖注入</strong></p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">part</span> of location_context;</span><br><span class="line"></span><br><span class="line"><span class="meta">@visibleForTesting</span></span><br><span class="line"><span class="keyword">typedef</span> Location LocationFactory(); <span class="comment">// typedef 类型定义</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@visibleForTesting</span></span><br><span class="line"><span class="keyword">void</span> mockLocation(LocationFactory mock) &#123;</span><br><span class="line">    _createLocation = mock;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">LocationFactory _createLocation = () =&gt; Location();</span><br></pre></td></tr></table></figure>
-<p>首先，我们使用<code>typedef</code>为我们的工厂函数进行了类型定义，我将用该工厂函数来进行依赖注入，方法代码仅仅是不接受任务参数来返回<code>Location</code>实例。</p>
-<p>其次，我定义了一个方法能够覆盖我们的工厂方法，以至于能够注入不同的依赖。<code>mockLocation</code>接收一个回调函数作为依赖，然后将该回调赋值给默认的工厂函数。</p>
-<p>最后，定义我们的默认的工厂函数来返回我们<code>Location</code>依赖的实例对象。在测试的时候我们可以使用<code>mockLocation</code>方法来允许我们的控件能够获取到一个mocked的版本。</p>
-<p>我们使用<code>@visibleForTesting</code>标记这两部分进行模拟，来让开发者知道这些构造是“私有”，在他们的代码中不应该访问的，即使在这个包外是可见的。</p>
-<p>这个<code>Inherited Widget</code>继承控件本质非常简单，我们传给它一些信息，然后这些信息会在控件树层次中高效地向下传播，它控件下的子控件能够访问到这些信息，达到信息共享的效果，我们将共享三个值：<code>lastLocation</code>，<code>currentLocation</code>，和<code>error</code>。</p>
-<p><strong>创建Inerited Widget</strong></p>
-<p><code>lastLocation</code>和<code>currentLocation</code>这个两个变量不言自明，使我们的应用程序能够进行方向向量上的计算。error仅仅是一个字符串字段，来包含我们可能遇到的异常错误信息，该控件的父类是<code>ProxyWidget</code>代理控件，该控件不会去构建一个新的控件，而是使用提供给它的子控件，也就是<code>child</code>属性。</p>
-<p>下面仅仅是这个类的开始部分，我们将在随后的部分进行修改调整。</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LocationContext</span> <span class="keyword">extends</span> <span class="title">InheritedWidget</span> </span>&#123; <span class="comment">// 继承InheritedWidget</span></span><br><span class="line">    <span class="keyword">final</span> Position currentLocation;</span><br><span class="line">    <span class="keyword">final</span> Position lastLocation;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> error;   <span class="comment">// 定义我们要共享的成员变量，为初始化默认null;</span></span><br><span class="line">    </span><br><span class="line">    LocationConext._(&#123;  <span class="comment">// 私有的命名构造函数,继承额外添加的成员变量在我们的构造参数中，初始化</span></span><br><span class="line">        <span class="meta">@required</span> <span class="keyword">this</span>.currentLocation,</span><br><span class="line">        <span class="keyword">this</span>.lastLocation,</span><br><span class="line">        <span class="keyword">this</span>.error,</span><br><span class="line">        Key key,</span><br><span class="line">        Widget child,</span><br><span class="line">    &#125;): <span class="keyword">super</span>(key :key,child: child); <span class="comment">// 调用父类构造函数</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span> Widget around(Widget child,&#123;Key key&#125;) &#123;</span><br><span class="line">        <span class="keyword">return</span> _LocationContextWrapper(child:child,key:key)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@override</span></span><br><span class="line">    <span class="built_in">bool</span> updateShouldNotify(LocationContext oldWidget) &#123;</span><br><span class="line">        <span class="keyword">return</span> currentLocation != oldWidget.currentLocation || </span><br><span class="line">            lastLocation != oldWidget.lastLocation || </span><br><span class="line">            error != oldWidget.error;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们的命名构造函数以_为前缀，这意味着它只能在本身所在的包中进行初始化，这对继承控件来说十分重要的。</p>
-<p><code>of</code>方法正是发挥魔力的地方，该方法允许任意的子控件能够调用<code>LocationConetext.of(context)</code>，然后返回该控件的实例，允许它们能够访问到该控件的公共成员。</p>
-<p>最后，<code>updateShouldNotify</code>用于是否通知控件树层次结构中该控件节点以下的控件已经发生更新，以至于它们能够重新构建，如果必要 ，如果其属性发生变化，这个控件将会通知一个更新。</p>
-<p><strong>创建Stateful Widget</strong></p>
-<p>我们的状态控件将会与<code>Location</code>进行交互，存储并更新我们的位置信息，并将其传入我们创建的继承控件中。</p>
-<p>添加下面代码到<code>lib/src/conetext.dart</code>底部：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_LocationContextWrapper</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> Widget child;</span><br><span class="line">    _locationContextWrapper(&#123;Key key,<span class="keyword">this</span>.child&#125;) : <span class="keyword">super</span>(key:key);</span><br><span class="line">    State&lt;StatefulWidget&gt; createState() =&gt; _LocationContextWrapperState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_LocationContextWrapperState</span> <span class="keyword">extends</span> <span class="title">State</span>(<span class="title">_LocationContextWrapper</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> Location _location = _createLocation(); <span class="comment">// 注入我们的依赖，初始化Location对象</span></span><br><span class="line">    <span class="built_in">String</span> _error;</span><br><span class="line">    Position _currentLocation;</span><br><span class="line">    Position _lastLocation;</span><br><span class="line">    StreamSubscription&lt;<span class="built_in">Map</span>&lt;<span class="built_in">String</span>,<span class="built_in">double</span>&gt;&gt; _locationChangedSubsciption;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们有一个<code>StatefulWidget</code>控件且包含了一个名为<code>child</code>的成员控件，这个<code>child控件将会被</code>LocationContext`包裹，接收位置更新。</p>
-<p>你将会注意到我们的三个成员变量和我们<code>LocationContext</code>存储的三个变量很相似，这个因为这三个<code>_error</code>,<code>_currentLocation</code>,<code>_lastLocation</code>值正是我们将要本地管理并传入<code>LocationContext</code>的值。</p>
-<p>最后，<code>_locationChangedSubsription</code>将用于从我们的<code>Location</code>对象来监听位置更新，注意这个将会返回一个<code>Map</code>对象，需要将其转化为<code>Map</code>实例。</p>
-<p>接下来初始化我们的状态，在<code>_locationChangedSubscription</code>下添加如下代码：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line"><span class="keyword">void</span> initState()&#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    _locationChangedSubscription = _location.onLocationChanged().listen((<span class="built_in">Map</span>&lt;<span class="built_in">String</span>,<span class="built_in">double</span>&gt; result) &#123;</span><br><span class="line">        <span class="keyword">final</span> Position nextLocation = Position._fromMap(result);</span><br><span class="line">        setState(()&#123;</span><br><span class="line">            _error = <span class="keyword">null</span>;</span><br><span class="line">            _lastLocation = _currentLocation;</span><br><span class="line">            _currentLocation = nextLocation;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">    initLocation();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们在这个方法中，做了两个事情：1.我们订阅<code>_location.onLocationChanged</code>流来监听位置更新，每当接收到一个更新，我们将会从<code>Map</code>中创建一个<code>Position</code>实例，然后从接收的位置信息中通过清空<code>_error</code>，更新<code>_lastLocation</code>，设置<code>_currentLocation</code>来更新我们的state，2.初始化位置信息，来载入初始的位置数据，在这个方法我们使用<code>async/await</code>语法糖来使得我们的代码看起来更加线性，但是我们也可以仅仅使用<code>Future</code>，添加如下方法：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> initLocation() <span class="keyword">async</span> &#123;</span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">     <span class="keyword">final</span> <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">double</span>&gt; result = <span class="keyword">await</span> _location.getLocation();</span><br><span class="line"></span><br><span class="line">     setState(() &#123;</span><br><span class="line">       _error = <span class="keyword">null</span>;</span><br><span class="line">       _lastLocation = Position._fromMap(result);</span><br><span class="line">       _currentLocation = _lastLocation;</span><br><span class="line">     &#125;);</span><br><span class="line">   &#125; on PlatformException <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">     setState(() &#123;</span><br><span class="line">       <span class="keyword">if</span> (e.code == <span class="string">'PERMISSION_DENIED'</span>) &#123;</span><br><span class="line">         _error = <span class="string">'Location Permission Denied'</span>;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (e.code == <span class="string">'PERMISSION_DENIED_NEVER_ASK'</span>) &#123;</span><br><span class="line">         _error =</span><br><span class="line">             <span class="string">'Location Permission Denied. Please open App Settings and enabled Location Permissions'</span>;</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;);</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>我们<code>await</code>当前返回设备位置信息，然后像我们之前的那样更新我们的状态，因为这个是我们第一次时候的状态，我将要设置<code>_lastLocation</code>和<code>_currentLoaction</code>相同的值，如果发生异常，我们捕获该异常，设置<code>_error</code>。</p>
-<p>接下来，我们要确保正确地取消订阅流，这将会在<code>dispose</code>中处理，该方法会在控件销毁的时候被调用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@override</span><br><span class="line">void dispose() &#123;</span><br><span class="line">    _locationChangedSubscription?.cancel();</span><br><span class="line">    super.dispose();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里使用<code>?.</code>确保null值安全，这个要小心，如果没有初始化这个订阅，这个可能会发生错误。所以做一个空值判断。</p>
-<p>最后，我们将会利用这些信息来实际构建，下面这个地方是我们实际使用<code>Inherited Widget</code>这个代理控件的地方：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Widget bulid(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> LocationContext._(</span><br><span class="line">        lastLocation:_lastLocation,</span><br><span class="line">        currentLocation: _currentLocation,</span><br><span class="line">        error:_error,</span><br><span class="line">        child:widget.child <span class="comment">// widget == _LocationContextWrapper，其为getter属性</span></span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>简单地说，我们只是构建了<code>Inherited Widget</code>，然后将在<code>State</code>中收集到的数据传给它，同时<code>Inherited Widget</code>包裹<code>child</code>，<code>Inherited Widget</code>控件为代理控件，本身不会构建子控件，相反会将<code>child</code>成员控件作为其子控件。这就意味着无论何时我们获取一个新的位置以及更新我们的状态，就会传入新的信息给<code>LocationContext</code>，进而子节点的控件能够访问到这些数据。</p>
-<p>此外，我们缺少了些重要的东西，一个使用<code>_LocationContextWrapper</code>的方法，因为它是包内私有的，我们需要添加一个方法来帮助我们使用它，我添加一个公有的静态方法到<code>LocationContext</code>中。</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> Widget around(Widget child, &#123;Key key&#125;) &#123;</span><br><span class="line">    retutn _locationContextWrapper(child:child,key:key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -627,10 +439,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -638,6 +451,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -658,8 +475,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -710,6 +536,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#在flutter应用程序中分离构建环境"><span class="nav-number">1.</span> <span class="nav-text">在flutter应用程序中分离构建环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最初的应用程序"><span class="nav-number">2.</span> <span class="nav-text">最初的应用程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将应用程序分为两个环境"><span class="nav-number">3.</span> <span class="nav-text">将应用程序分为两个环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建配置对象"><span class="nav-number">4.</span> <span class="nav-text">创建配置对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将AppConfig对象转变为Inherited-Widget"><span class="nav-number">5.</span> <span class="nav-text">将AppConfig对象转变为Inherited Widget</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为不同的环境创建启动文件"><span class="nav-number">6.</span> <span class="nav-text">为不同的环境创建启动文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在不同的环境中运行应用程序"><span class="nav-number">7.</span> <span class="nav-text">在不同的环境中运行应用程序</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -857,6 +699,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
