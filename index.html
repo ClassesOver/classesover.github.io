@@ -250,6 +250,381 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="编号15077">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Camera's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/" itemprop="url">在Flutter中使用贝塞尔曲线裁剪小部件</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-04T13:29:34+08:00">
+                2019-01-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>英文地址：<a href="https://iirokrankka.com/2017/09/04/clipping-widgets-with-bezier-curves-in-flutter/" target="_blank" rel="noopener">Clipping widgets with bezier curves in Flutter</a></p>
+<p>在本篇博文中，我将探究如何使用贝塞尔曲线剪切图片。</p>
+<p><img src="/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/wave_clip_result.png" alt=""></p>
+<h4 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h4><p>源码在<a href="https://github.com/roughike/wavy-image-mask" target="_blank" rel="noopener">这里</a>。</p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>首先，创建一个Flutter项目，称作为<em>wavy_image_mask</em>，假定你已经安装了Flutter，那么你在你控制台运行<code>flutter create wavy_image_mask</code>，使用IntelliJ IDEA打开你的项目。</p>
+<p>来让我们创建一个名为<em>WavyHeaderImage</em>的<code>StatelessWidget</code> 控件。先在<em>lib</em>目录下创建<code>wavy_header_image.dart</code>文件，现在，我们从构建方法中返回一个占位的文本控件。</p>
+<p><code>wavy_header_image.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WavyHeaderImage</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Text(<span class="string">'This is where our image will be.'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>返回<code>main</code>文件，移除flutter为你自动生成样本代码，使用刚刚创建的<em>WavyHeaderImage</em>来替换<code>Scaffold</code>主体，如下：</p>
+<p><code>main.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:wavy_image_mask/wavy_header_image.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() =&gt; runApp(MyApp());</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">'Wavy image mask'</span>,</span><br><span class="line">      theme: ThemeData(</span><br><span class="line">        primarySwatch: Colors.blue,</span><br><span class="line">      ),</span><br><span class="line">      home: MyHomePage(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyHomePage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  _MyHomePageState createState() =&gt; _MyHomePageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_MyHomePageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">MyHomePage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      body: WavyHeaderImage(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="创建标题图片"><a href="#创建标题图片" class="headerlink" title="创建标题图片"></a>创建标题图片</h4><p>现在，我需要一个好看的标题图片，我们将使用Chevanon Photography的<a href="https://www.pexels.com/photo/close-up-of-coffee-cup-on-table-312418/" target="_blank" rel="noopener">这张图片</a>。</p>
+<h5 id="在flutter添加assets"><a href="#在flutter添加assets" class="headerlink" title="在flutter添加assets"></a>在flutter添加assets</h5><p>为了引入包含一般的图片或文件，我们使用Flutter的assets系统。在我们的应用的根目录创建<em>images</em>文件夹。添加你刚才下载的<em>coffee_header.jpeg</em>到图片文件里面，你的目录结构看起来如下：</p>
+<p><img src="/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/wavy_image_mask_folder_structure.png" alt=""></p>
+<p>为了能够使得图片在我们的代码中可用访问到，我也需要在<em>pubspec.yaml</em>文件中的flutter部分中的引入assets，看起来如下所示：</p>
+<p><code>pubspec.yaml</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">name: wavy_image_mask</span><br><span class="line">description: A <span class="keyword">new</span> Flutter project.</span><br><span class="line"></span><br><span class="line">dependencies:</span><br><span class="line">  flutter:</span><br><span class="line">    sdk: flutter</span><br><span class="line"></span><br><span class="line">dev_dependencies:</span><br><span class="line">  flutter_test:</span><br><span class="line">    sdk: flutter</span><br><span class="line"></span><br><span class="line">flutter:</span><br><span class="line">  uses-material-design: <span class="keyword">true</span></span><br><span class="line">  assets:</span><br><span class="line">    - images/coffee_header.jpeg</span><br></pre></td></tr></table></figure>
+<p>现在我们就可以使用这张图片了。</p>
+<h5 id="制作一些波浪纹"><a href="#制作一些波浪纹" class="headerlink" title="制作一些波浪纹"></a>制作一些波浪纹</h5><p>比较笨的方法就是寻求设计师来在Photoshop中编辑我们的原始图片，创建波浪纹遮蔽。我也可以找一张使用白色绘制波浪纹的透明图片来贴在我们图像的顶部，把它固定到底部，结束一天的工作。</p>
+<p>更好的方式是我们自己裁剪图片的波浪部分。该解决方案在不同屏幕尺寸上看起来更好。我们不需要引入额外的波浪纹遮蔽图片到我们的资产中。多亏了Flutter中一组与图像相关的API，我们可以轻松的实现。</p>
+<h6 id="使用ClipPaths"><a href="#使用ClipPaths" class="headerlink" title="使用ClipPaths"></a>使用ClipPaths</h6><p>该类是我们用于在底部创建的波浪纹形状的组件是<code>ClipPath</code>组件。<code>ClipPath</code>需要两个参数：<code>clipper</code>和<code>child</code>。这个<code>clipper</code>是一个<code>CustomClipper&lt;Path&gt;</code>对象，决定了一个<code>Path</code>路径。<code>ClipPath</code>使用该路径来防止<code>child</code>组将在闭合的路径外绘制。</p>
+<p>重新在打开我们在最开始的时候创建的<code>wavy_header_image.dart</code>文件，移除占位的文本组件，用于<code>ClipPath</code>取代。</p>
+<p><em>child</em>参数一个<code>new Image.asset(&#39;image/coffee_header.jpeg&#39;)</code>。这个仅仅是从图片文件夹载入图片并显示它。对于<code>clipper</code>，我们仅仅是调用了<code>new BottomWaveClipper()</code>。我们也许在同一文件中，创建一个新类<code>BottomWaveClipper</code>。</p>
+<p>下面这个是现在应该有的：</p>
+<p><code>wavy_header_image.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WavyHeaderImage</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> ClipPath(</span><br><span class="line">      child: Image.asset(<span class="string">'images/coffee_header.jpeg'</span>),</span><br><span class="line">      clipper: BottomWaveClipper(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BottomWaveClipper</span> <span class="keyword">extends</span> <span class="title">CustomClipper</span>&lt;<span class="title">Path</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Path getClip(Size size) &#123;</span><br><span class="line">    <span class="comment">// This is where we decide what part of our image is going to be</span></span><br><span class="line">    <span class="comment">// visible. If you try to run the app now, nothing will be shown.</span></span><br><span class="line">    <span class="keyword">return</span> Path();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> shouldReclip(CustomClipper&lt;Path&gt; oldClipper) =&gt; <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="绘制路径"><a href="#绘制路径" class="headerlink" title="绘制路径"></a>绘制路径</h6><p>所有的<code>CustomClippers</code>在它们的<code>getClip</code>方法中获得一个Size参数，这个size表示传给<em>ClipPath</em>对象的<em>child</em>组件的宽度和高度。在这里，是我们想要剪切的图片的coffee图片。因为我们的<em>CustomClipper</em>使用路径来确定剪切的区域，所以我们使用Path类中的方法来绘制这个剪切区域。</p>
+<p>例如，如果我们想斜着裁剪图像的右下角，最终代码会得到下面这样的:</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Path getClip(Size size) &#123;</span><br><span class="line">    <span class="keyword">var</span> path = Path();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Draw a straight line from current point to the bottom left corner.</span></span><br><span class="line">    path.lineTo(<span class="number">0.0</span>, size.height);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Draw a straight line from current point to the top right corner.</span></span><br><span class="line">    path.lineTo(size.width, <span class="number">0.0</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Draws a straight line from current point to the first point of the path.</span></span><br><span class="line">    <span class="comment">// In this case (0, 0), since that's where the paths start by default.</span></span><br><span class="line">    path.close();</span><br><span class="line">    <span class="keyword">return</span> path;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为除了底部的波浪纹，我们不想剪切任何地方。所以，我们需要的在绘制一条线到右上角前，添加一个<code>path.lineTo(size.width,size.height)</code>。这个修改将会返回图片本身，没有任何剪切，但是设置了实际要剪切波浪纹的部分。</p>
+<p>现在我们学习了如何用路径画直线来剪辑，让我们来画波浪纹。因为波的底部垂直方向上低于于左下角的第一个点，所以我们要把这个点向上移动一点。同样的，右下角也比左下角高一点。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> path = Path();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Since the wave goes vertically lower than bottom left starting point,</span></span><br><span class="line"><span class="comment">// we'll have to make this point a little higher.</span></span><br><span class="line">path.lineTo(<span class="number">0.0</span>, size.height - <span class="number">20</span>); </span><br><span class="line"></span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span> The wavy clipping magic happens here, between the bottom left and bottom right points.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// The bottom right point also isn't at the same level as its left counterpart,</span></span><br><span class="line"><span class="comment">// so we'll adjust that one too.</span></span><br><span class="line">path.lineTo(size.width, size.height - <span class="number">40</span>);</span><br><span class="line">path.lineTo(size.width, <span class="number">0.0</span>);</span><br><span class="line">path.close();</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>这将在图像的底部创建一个轻微的夹角，如下所示：</p>
+<p><img src="/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/coffee_bottom_clip_part_1.png" alt=""></p>
+<h6 id="什么是二次贝塞尔曲线？"><a href="#什么是二次贝塞尔曲线？" class="headerlink" title="什么是二次贝塞尔曲线？"></a>什么是二次贝塞尔曲线？</h6><p>现在，我实现最终的波浪纹。为此，我们使用<code>quadraticBezierTo</code>方法，这允许我们很容易地在我们的路径上创建我们的曲线。</p>
+<p>该API极其类似于<code>lineTo</code>方法，但是相反不是给定一个坐标，我们要给两个：一个用于我们的端点，另一个用于所谓的控制点。</p>
+<p>根本上来说，我们仅是绘制一条直线到我们的端点，我们的控制点就像是磁铁一样，将路径的中间部分拉向它的方向，使我们的直线扭曲成一个曲线。</p>
+<h5 id="端点与控制"><a href="#端点与控制" class="headerlink" title="端点与控制"></a>端点与控制</h5><p>在我们这个例子中，我们需要绘制两个二次贝塞尔曲线。第一条线的控制点应该将该条线的中点向下拉。类似地，第二条线应该将该条线的中点向上拉。</p>
+<p>如果我们看下这个模型，第一条线并不完全在水平方向上的中间位置结束。同样地，第二条线的宽度比该图片的宽度的一半更宽一些。</p>
+<p>基于目前了解的这些，我们想要向下面这样排列这些端点以及控制点：</p>
+<p><img src="/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/coffee_bottom_clip_points.png" alt=""></p>
+<p>你可能会说:“这些曲线太大了!”你说得对。然而，这些红色控制点并不是曲线接触的地方，它们只会像磁铁一样吸引直线。最终的结果会非常接近模型。</p>
+<h6 id="第一条曲线"><a href="#第一条曲线" class="headerlink" title="第一条曲线"></a>第一条曲线</h6><p><code>第一条曲线</code>有下面几点可了解：</p>
+<ul>
+<li>端点在水平方向稍稍距离中点一段距离（未达到）。</li>
+<li>端点在垂直方向上稍稍高于起始点。</li>
+<li>控制点在水平方向上位于图片宽度的1/4处。</li>
+<li>控制点在垂直方向上位于图片的底部。</li>
+</ul>
+<p>基于以上这些，第一条贝塞尔曲线看起来是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var fisrtControlPoint = new Offset(size.width /4,size.heigh);</span><br><span class="line">var firstEndPoint = new Offset(size.width /2.25,size.height-30.0);</span><br><span class="line">path.quadraticBezierTo(firstControlPoint.dx,firstControlPoint.dy,firstEndPoint.dx,firstEndPoint.dy);</span><br></pre></td></tr></table></figure>
+<p>我们可以跳过创建Offset对象，可直接使用线x &amp; y 坐标，但是这里仅仅是为了可读性。这样，第一眼就能看出<code>quadraticBezierTo</code>方法的参数是什么。</p>
+<h6 id="第二条曲线"><a href="#第二条曲线" class="headerlink" title="第二条曲线"></a>第二条曲线</h6><p><code>第二条曲线</code>有下面几点可了解：</p>
+<ul>
+<li>端点在水平方向上位于图片的右边。</li>
+<li>端点在垂直方向上比第一条曲线的端点略高一点。</li>
+<li>控制点在水平方向上位于图片宽度的3/4处。</li>
+<li>控制点在垂直方向上在端点上方大约20个像素。</li>
+</ul>
+<p>伴随着一些错误和尝试，我们得到第二条曲线：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> secondControlPoint =</span><br><span class="line">    Offset(size.width - (size.width / <span class="number">3.25</span>), size.height - <span class="number">65</span>);</span><br><span class="line"><span class="keyword">var</span> secondEndPoint = Offset(size.width, size.height - <span class="number">40</span>);</span><br><span class="line">path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,</span><br><span class="line">    secondEndPoint.dx, secondEndPoint.dy);</span><br></pre></td></tr></table></figure>
+<p>最后的效果如下：</p>
+<p><img src="/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/wave_clip_result.png" alt=""></p>
+<p>下面这个是<em>WavyHeaderImage</em>组件的完整代码：</p>
+<p><code>wavy_header_image.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WavyHeaderImage</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> ClipPath(</span><br><span class="line">      child: Image.asset(<span class="string">'images/coffee_header.jpeg'</span>),</span><br><span class="line">      clipper: BottomWaveClipper(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BottomWaveClipper</span> <span class="keyword">extends</span> <span class="title">CustomClipper</span>&lt;<span class="title">Path</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Path getClip(Size size) &#123;</span><br><span class="line">    <span class="keyword">var</span> path = <span class="keyword">new</span> Path();</span><br><span class="line">    path.lineTo(<span class="number">0.0</span>, size.height - <span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> firstControlPoint = Offset(size.width / <span class="number">4</span>, size.height);</span><br><span class="line">    <span class="keyword">var</span> firstEndPoint = Offset(size.width / <span class="number">2.25</span>, size.height - <span class="number">30.0</span>);</span><br><span class="line">    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,</span><br><span class="line">        firstEndPoint.dx, firstEndPoint.dy);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> secondControlPoint =</span><br><span class="line">        Offset(size.width - (size.width / <span class="number">3.25</span>), size.height - <span class="number">65</span>);</span><br><span class="line">    <span class="keyword">var</span> secondEndPoint = Offset(size.width, size.height - <span class="number">40</span>);</span><br><span class="line">    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,</span><br><span class="line">        secondEndPoint.dx, secondEndPoint.dy);</span><br><span class="line"></span><br><span class="line">    path.lineTo(size.width, size.height - <span class="number">40</span>);</span><br><span class="line">    path.lineTo(size.width, <span class="number">0.0</span>);</span><br><span class="line">    path.close();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> path;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> shouldReclip(CustomClipper&lt;Path&gt; oldClipper) =&gt; <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/03/从设计到Flutter-1-电影明细页面/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="编号15077">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Camera's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/03/从设计到Flutter-1-电影明细页面/" itemprop="url">从设计到Flutter #1 - 电影明细页面</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-03T21:46:14+08:00">
+                2019-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h4><p>我创建了一个<code>Movie</code>类用于保存关于电影的信息。同样的，我也创建了一个<code>Actor</code>类用于保存演员的名字和头像url地址。这些仅仅是传入到我们的UI组件中，以便它们知晓要显示什么。</p>
+<p>出于样例的目的，我创建一个文件，根据最初的设计，它保存了电影所需的所有模型。</p>
+<p><code>models.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">    Movie(&#123;</span><br><span class="line">        <span class="keyword">this</span>.bannerUrl,</span><br><span class="line">        <span class="keyword">this</span>.posterUrl,</span><br><span class="line">        <span class="keyword">this</span>.title,</span><br><span class="line">        <span class="keyword">this</span>.rating,</span><br><span class="line">        <span class="keyword">this</span>.starRating,</span><br><span class="line">        <span class="keyword">this</span>.categories,</span><br><span class="line">        <span class="keyword">this</span>.storyline,</span><br><span class="line">        <span class="keyword">this</span>.photoUrls,</span><br><span class="line">        <span class="keyword">this</span>.actors,</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> bannerUrl;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> posterUrl;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> title;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">double</span> rating;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">int</span> starRating;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; categories;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> storyline;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; photoUrls;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;Actor&gt; actors;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Actor</span> </span>&#123;</span><br><span class="line">    Actor(&#123;</span><br><span class="line">        <span class="keyword">this</span>.name,</span><br><span class="line">        <span class="keyword">this</span>.avatarUrl,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> name;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> avatarUrl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="数据源"><a href="#数据源" class="headerlink" title="数据源"></a>数据源</h4><p>我们不打算将我们的应用程序与在线电影的API牵连在一起，使用其API本身就是另一个话题，这个超出了本文的范围。相反，我仅仅是创建了一个电影的实例，并填充了与模型相同的信息。</p>
+<p><code>movie_api.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/models.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> Movie testMovie = Movie(</span><br><span class="line">  bannerUrl: <span class="string">'images/banner.png'</span>,</span><br><span class="line">  posterUrl: <span class="string">'images/poster.png'</span>,</span><br><span class="line">  title: <span class="string">'The Secret Life of Pets'</span>,</span><br><span class="line">  rating: <span class="number">8.0</span>,</span><br><span class="line">  starRating: <span class="number">4</span>,</span><br><span class="line">  categories: [<span class="string">'Animation'</span>, <span class="string">'Comedy'</span>],</span><br><span class="line">  storyline: <span class="string">'For their fifth fully-animated feature-film '</span></span><br><span class="line">      <span class="string">'collaboration, Illumination Entertainment and Universal '</span></span><br><span class="line">      <span class="string">'Pictures present The Secret Life of Pets, a comedy about '</span></span><br><span class="line">      <span class="string">'the lives our...'</span>,</span><br><span class="line">  photoUrls: [</span><br><span class="line">    <span class="string">'images/1.png'</span>,</span><br><span class="line">    <span class="string">'images/2.png'</span>,</span><br><span class="line">    <span class="string">'images/3.png'</span>,</span><br><span class="line">    <span class="string">'images/4.png'</span>,</span><br><span class="line">  ],</span><br><span class="line">  actors: [</span><br><span class="line">    Actor(</span><br><span class="line">      name: <span class="string">'Louis C.K.'</span>,</span><br><span class="line">      avatarUrl: <span class="string">'images/louis.png'</span>,</span><br><span class="line">    ),</span><br><span class="line">    Actor(</span><br><span class="line">      name: <span class="string">'Eric Stonestreet'</span>,</span><br><span class="line">      avatarUrl: <span class="string">'images/eric.png'</span>,</span><br><span class="line">    ),</span><br><span class="line">    Actor(</span><br><span class="line">      name: <span class="string">'Kevin Hart'</span>,</span><br><span class="line">      avatarUrl: <span class="string">'images/kevin.png'</span>,</span><br><span class="line">    ),</span><br><span class="line">    Actor(</span><br><span class="line">      name: <span class="string">'Jenny Slate'</span>,</span><br><span class="line">      avatarUrl: <span class="string">'images/jenny.png'</span>,</span><br><span class="line">    ),</span><br><span class="line">    Actor(</span><br><span class="line">      name: <span class="string">'Ellie Kemper'</span>,</span><br><span class="line">      avatarUrl: <span class="string">'images/ellie.png'</span>,</span><br><span class="line">    ),</span><br><span class="line">  ],</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>这个使我们能够在应用程序的任何地方来轻松使用地使用<code>testMovie</code>作为数据源，同时还能提高我们的速度，无需担心网络问题。</p>
+<h4 id="我们的-main-dart-文件"><a href="#我们的-main-dart-文件" class="headerlink" title="我们的 main.dart 文件"></a>我们的 main.dart 文件</h4><p>这个是我们应用程序的主入口，这里没有特别的地方，仅仅是将<code>MovieDetailsPage</code>作为该应用所拥有的唯一页面。</p>
+<p><code>main.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/movie_api.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/movie_details_page.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() =&gt; runApp(MyApp());</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">    <span class="meta">@override</span></span><br><span class="line">    Widget build(BuildContext context) &#123;</span><br><span class="line">        <span class="keyword">return</span> MaterialApp(</span><br><span class="line">        	title: <span class="string">'Flutter Demo'</span>,</span><br><span class="line">            theme: ThemeData(</span><br><span class="line">                primarySwatch: Colors.blue,</span><br><span class="line">                accentColor: <span class="keyword">const</span> Color(<span class="number">0xFFFF5959</span>),</span><br><span class="line">            ),</span><br><span class="line">            home: MovieDetailsPage(testMoive),</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在现实生活中，我们可能希望是将电影列表作为第一页显示，在用户点击一个电影后显示明细页面。在本教程，我们只关注电影明细页面。</p>
+<h4 id="MovieDetailsPage类"><a href="#MovieDetailsPage类" class="headerlink" title="MovieDetailsPage类"></a>MovieDetailsPage类</h4><p>这个是我们电影明细页的入口，<code>MovieDetailsPage</code>接收一个<code>Movie</code>对象作为构造参数，并向下传给子组件。通过这种方式，随后我们可以轻松地将页面链接到一个后端。</p>
+<p><code>movie_details_page.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/actor_scroller.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/models.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/movie_detail_header.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/photo_scroller.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/story_line.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MovieDetailsPage</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  MovieDetailsPage(<span class="keyword">this</span>.movie);</span><br><span class="line">  <span class="keyword">final</span> Movie movie;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      body: SingleChildScrollView(</span><br><span class="line">        child: Column(</span><br><span class="line">          children: [</span><br><span class="line">            MovieDetailHeader(movie),</span><br><span class="line">            Padding(</span><br><span class="line">              padding: <span class="keyword">const</span> EdgeInsets.all(<span class="number">20.0</span>),</span><br><span class="line">              child: Storyline(movie.storyline),</span><br><span class="line">            ),</span><br><span class="line">            PhotoScroller(movie.photoUrls),</span><br><span class="line">            SizedBox(height: <span class="number">20.0</span>),</span><br><span class="line">            ActorScroller(movie.actors),</span><br><span class="line">            SizedBox(height: <span class="number">50.0</span>),</span><br><span class="line">          ],</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>尽管这个页面包含在一个脚手架中，但我们这里不使用AppBar，因为我们想要展示我们的电影背景。主体是一个<code>Column</code>控件用来垂直地堆叠我们的主要的控件。最后，整个被包裹在<code>SingleChildScrollView</code>控件中。对于垂直方向上的边距，我们使用<code>SizedBoxes</code>配合<code>height</code>属性来实现我们想要的间距。</p>
+<p>让我们一个个浏览每个组件，看看他们是由什么构成的。</p>
+<h4 id="MovieDetailHeader-电影详情页面头部"><a href="#MovieDetailHeader-电影详情页面头部" class="headerlink" title="MovieDetailHeader 电影详情页面头部"></a>MovieDetailHeader 电影详情页面头部</h4><p>这个<code>MovieDetailHeader</code>是一个简单的<code>Stack</code>控件，包含了两个子控件。<code>Stack</code>是这样的一个容器，子控件能够相互在其上面堆叠地进行布局。第一个子控件是圆弧形背景图像，第二个是<code>Row</code>控件，包含了海报以及电影的相关信息。</p>
+<p><img src="/2019/01/03/从设计到Flutter-1-电影明细页面/header_stack_arc_info_breakdown.png" alt=""></p>
+<p>因为原模型设计是将电影横幅部分地覆盖在电影信息上，我们在这里使用了一个小技巧:<code>ArcBannerImage</code>的底部填充间距140.0。</p>
+<p>这只是延伸了底部可用的空间，因此我们可以部分地将横幅与电影信息覆盖起来。如果没有这个技巧，电影信息就会被放在整个横幅的顶部，从而产生一个相当丑陋的效果:</p>
+<p><img src="/2019/01/03/从设计到Flutter-1-电影明细页面/header_without_bottom_padding.png" alt=""></p>
+<p>我们使用<code>Positioned</code>控件来将我们的电影信息固定在底部。电影信息行包含了两项：电影海报和关于电影进一步的明细信息（这是一个<code>Column</code>控件）。</p>
+<p><code>movie_detail_header.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/arc_banner_image.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/models.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/poster.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/rating_information.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MovieDetailHeader</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  MovieDetailHeader(<span class="keyword">this</span>.movie);</span><br><span class="line">  <span class="keyword">final</span> Movie movie;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">List</span>&lt;Widget&gt; _buildCategoryChips(TextTheme textTheme) &#123;</span><br><span class="line">    <span class="keyword">return</span> movie.categories.map((category) &#123;</span><br><span class="line">      <span class="keyword">return</span> Padding(</span><br><span class="line">        padding: <span class="keyword">const</span> EdgeInsets.only(right: <span class="number">8.0</span>),</span><br><span class="line">        child: Chip(</span><br><span class="line">          label: Text(category),</span><br><span class="line">          labelStyle: textTheme.caption,</span><br><span class="line">          backgroundColor: Colors.black12,</span><br><span class="line">        ),</span><br><span class="line">      );</span><br><span class="line">    &#125;).toList();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">var</span> textTheme = Theme.of(context).textTheme;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> movieInformation = Column(</span><br><span class="line">      crossAxisAlignment: CrossAxisAlignment.start,</span><br><span class="line">      children: [</span><br><span class="line">        Text(</span><br><span class="line">          movie.title,</span><br><span class="line">          style: textTheme.title,</span><br><span class="line">        ),</span><br><span class="line">        SizedBox(height: <span class="number">8.0</span>),</span><br><span class="line">        RatingInformation(movie),</span><br><span class="line">        SizedBox(height: <span class="number">12.0</span>),</span><br><span class="line">        Row(children: _buildCategoryChips(textTheme)),</span><br><span class="line">      ],</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Stack(</span><br><span class="line">      children: [</span><br><span class="line">        Padding(</span><br><span class="line">          padding: <span class="keyword">const</span> EdgeInsets.only(bottom: <span class="number">140.0</span>),</span><br><span class="line">          child: ArcBannerImage(movie.bannerUrl),</span><br><span class="line">        ),</span><br><span class="line">        Positioned(</span><br><span class="line">          bottom: <span class="number">0.0</span>,</span><br><span class="line">          left: <span class="number">16.0</span>,</span><br><span class="line">          right: <span class="number">16.0</span>,</span><br><span class="line">          child: Row(</span><br><span class="line">            crossAxisAlignment: CrossAxisAlignment.end,</span><br><span class="line">            mainAxisAlignment: MainAxisAlignment.end,</span><br><span class="line">            children: [</span><br><span class="line">              Poster(</span><br><span class="line">                movie.posterUrl,</span><br><span class="line">                height: <span class="number">180.0</span>,</span><br><span class="line">              ),</span><br><span class="line">              SizedBox(width: <span class="number">16.0</span>),</span><br><span class="line">              Expanded(child: movieInformation),</span><br><span class="line">            ],</span><br><span class="line">          ),</span><br><span class="line">        ),</span><br><span class="line">      ],</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个<code>Column</code>控件包含了三个部分（子控件）：电影标题，电影评分，电影分类。</p>
+<p>有一点需要注意的是，我们这里使用了<code>Expanded</code>控件，否则，如果电影名过长将会被剪切掉，此外还在左边添加了一些填充，这样海报和电影信息就不会紧紧挨着了。</p>
+<h4 id="ArcBannerImage-圆弧横幅图片"><a href="#ArcBannerImage-圆弧横幅图片" class="headerlink" title="ArcBannerImage 圆弧横幅图片"></a>ArcBannerImage 圆弧横幅图片</h4>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/02/更为整洁的Flutter-UI代码的技巧/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -872,7 +1247,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

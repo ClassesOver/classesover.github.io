@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="flutter, dart">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="模型我创建了一个Movie类用于保存关于电影的信息。同样的，我也创建了一个Actor类用于保存演员的名字和头像url地址。这些仅仅是传入到我们的UI组件中，以便它们知晓要显示什么。 出于样例的目的，我创建一个文件，根据最初的设计，它保存了电影所需的所有模型。 models.dart 1234567891011121314151617181920212223242526272829303132cla">
+<meta name="keywords" content="flutter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从设计到Flutter #1 - 电影明细页面">
+<meta property="og:url" content="http://yoursite.com/2019/01/03/从设计到Flutter-1-电影明细页面/index.html">
+<meta property="og:site_name" content="Camera&#39;s Blog">
+<meta property="og:description" content="模型我创建了一个Movie类用于保存关于电影的信息。同样的，我也创建了一个Actor类用于保存演员的名字和头像url地址。这些仅仅是传入到我们的UI组件中，以便它们知晓要显示什么。 出于样例的目的，我创建一个文件，根据最初的设计，它保存了电影所需的所有模型。 models.dart 1234567891011121314151617181920212223242526272829303132cla">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/01/03/从设计到Flutter-1-电影明细页面/header_stack_arc_info_breakdown.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/03/从设计到Flutter-1-电影明细页面/header_without_bottom_padding.png">
+<meta property="og:updated_time" content="2019-01-03T15:36:23.913Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从设计到Flutter #1 - 电影明细页面">
+<meta name="twitter:description" content="模型我创建了一个Movie类用于保存关于电影的信息。同样的，我也创建了一个Actor类用于保存演员的名字和头像url地址。这些仅仅是传入到我们的UI组件中，以便它们知晓要显示什么。 出于样例的目的，我创建一个文件，根据最初的设计，它保存了电影所需的所有模型。 models.dart 1234567891011121314151617181920212223242526272829303132cla">
+<meta name="twitter:image" content="http://yoursite.com/2019/01/03/从设计到Flutter-1-电影明细页面/header_stack_arc_info_breakdown.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/03/从设计到Flutter-1-电影明细页面/">
+
+
+
+
+
+  <title>从设计到Flutter #1 - 电影明细页面 | Camera's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Camera's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/03/从设计到Flutter-1-电影明细页面/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="编号15077">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Camera's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">从设计到Flutter #1 - 电影明细页面</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-03T21:46:14+08:00">
+                2019-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h4><p>我创建了一个<code>Movie</code>类用于保存关于电影的信息。同样的，我也创建了一个<code>Actor</code>类用于保存演员的名字和头像url地址。这些仅仅是传入到我们的UI组件中，以便它们知晓要显示什么。</p>
+<p>出于样例的目的，我创建一个文件，根据最初的设计，它保存了电影所需的所有模型。</p>
+<p><code>models.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">    Movie(&#123;</span><br><span class="line">        <span class="keyword">this</span>.bannerUrl,</span><br><span class="line">        <span class="keyword">this</span>.posterUrl,</span><br><span class="line">        <span class="keyword">this</span>.title,</span><br><span class="line">        <span class="keyword">this</span>.rating,</span><br><span class="line">        <span class="keyword">this</span>.starRating,</span><br><span class="line">        <span class="keyword">this</span>.categories,</span><br><span class="line">        <span class="keyword">this</span>.storyline,</span><br><span class="line">        <span class="keyword">this</span>.photoUrls,</span><br><span class="line">        <span class="keyword">this</span>.actors,</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> bannerUrl;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> posterUrl;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> title;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">double</span> rating;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">int</span> starRating;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; categories;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> storyline;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; photoUrls;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;Actor&gt; actors;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Actor</span> </span>&#123;</span><br><span class="line">    Actor(&#123;</span><br><span class="line">        <span class="keyword">this</span>.name,</span><br><span class="line">        <span class="keyword">this</span>.avatarUrl,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> name;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> avatarUrl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="数据源"><a href="#数据源" class="headerlink" title="数据源"></a>数据源</h4><p>我们不打算将我们的应用程序与在线电影的API牵连在一起，使用其API本身就是另一个话题，这个超出了本文的范围。相反，我仅仅是创建了一个电影的实例，并填充了与模型相同的信息。</p>
+<p><code>movie_api.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/models.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> Movie testMovie = Movie(</span><br><span class="line">  bannerUrl: <span class="string">'images/banner.png'</span>,</span><br><span class="line">  posterUrl: <span class="string">'images/poster.png'</span>,</span><br><span class="line">  title: <span class="string">'The Secret Life of Pets'</span>,</span><br><span class="line">  rating: <span class="number">8.0</span>,</span><br><span class="line">  starRating: <span class="number">4</span>,</span><br><span class="line">  categories: [<span class="string">'Animation'</span>, <span class="string">'Comedy'</span>],</span><br><span class="line">  storyline: <span class="string">'For their fifth fully-animated feature-film '</span></span><br><span class="line">      <span class="string">'collaboration, Illumination Entertainment and Universal '</span></span><br><span class="line">      <span class="string">'Pictures present The Secret Life of Pets, a comedy about '</span></span><br><span class="line">      <span class="string">'the lives our...'</span>,</span><br><span class="line">  photoUrls: [</span><br><span class="line">    <span class="string">'images/1.png'</span>,</span><br><span class="line">    <span class="string">'images/2.png'</span>,</span><br><span class="line">    <span class="string">'images/3.png'</span>,</span><br><span class="line">    <span class="string">'images/4.png'</span>,</span><br><span class="line">  ],</span><br><span class="line">  actors: [</span><br><span class="line">    Actor(</span><br><span class="line">      name: <span class="string">'Louis C.K.'</span>,</span><br><span class="line">      avatarUrl: <span class="string">'images/louis.png'</span>,</span><br><span class="line">    ),</span><br><span class="line">    Actor(</span><br><span class="line">      name: <span class="string">'Eric Stonestreet'</span>,</span><br><span class="line">      avatarUrl: <span class="string">'images/eric.png'</span>,</span><br><span class="line">    ),</span><br><span class="line">    Actor(</span><br><span class="line">      name: <span class="string">'Kevin Hart'</span>,</span><br><span class="line">      avatarUrl: <span class="string">'images/kevin.png'</span>,</span><br><span class="line">    ),</span><br><span class="line">    Actor(</span><br><span class="line">      name: <span class="string">'Jenny Slate'</span>,</span><br><span class="line">      avatarUrl: <span class="string">'images/jenny.png'</span>,</span><br><span class="line">    ),</span><br><span class="line">    Actor(</span><br><span class="line">      name: <span class="string">'Ellie Kemper'</span>,</span><br><span class="line">      avatarUrl: <span class="string">'images/ellie.png'</span>,</span><br><span class="line">    ),</span><br><span class="line">  ],</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>这个使我们能够在应用程序的任何地方来轻松使用地使用<code>testMovie</code>作为数据源，同时还能提高我们的速度，无需担心网络问题。</p>
+<h4 id="我们的-main-dart-文件"><a href="#我们的-main-dart-文件" class="headerlink" title="我们的 main.dart 文件"></a>我们的 main.dart 文件</h4><p>这个是我们应用程序的主入口，这里没有特别的地方，仅仅是将<code>MovieDetailsPage</code>作为该应用所拥有的唯一页面。</p>
+<p><code>main.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/movie_api.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/movie_details_page.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() =&gt; runApp(MyApp());</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">    <span class="meta">@override</span></span><br><span class="line">    Widget build(BuildContext context) &#123;</span><br><span class="line">        <span class="keyword">return</span> MaterialApp(</span><br><span class="line">        	title: <span class="string">'Flutter Demo'</span>,</span><br><span class="line">            theme: ThemeData(</span><br><span class="line">                primarySwatch: Colors.blue,</span><br><span class="line">                accentColor: <span class="keyword">const</span> Color(<span class="number">0xFFFF5959</span>),</span><br><span class="line">            ),</span><br><span class="line">            home: MovieDetailsPage(testMoive),</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在现实生活中，我们可能希望是将电影列表作为第一页显示，在用户点击一个电影后显示明细页面。在本教程，我们只关注电影明细页面。</p>
+<h4 id="MovieDetailsPage类"><a href="#MovieDetailsPage类" class="headerlink" title="MovieDetailsPage类"></a>MovieDetailsPage类</h4><p>这个是我们电影明细页的入口，<code>MovieDetailsPage</code>接收一个<code>Movie</code>对象作为构造参数，并向下传给子组件。通过这种方式，随后我们可以轻松地将页面链接到一个后端。</p>
+<p><code>movie_details_page.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/actor_scroller.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/models.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/movie_detail_header.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/photo_scroller.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/story_line.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MovieDetailsPage</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  MovieDetailsPage(<span class="keyword">this</span>.movie);</span><br><span class="line">  <span class="keyword">final</span> Movie movie;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      body: SingleChildScrollView(</span><br><span class="line">        child: Column(</span><br><span class="line">          children: [</span><br><span class="line">            MovieDetailHeader(movie),</span><br><span class="line">            Padding(</span><br><span class="line">              padding: <span class="keyword">const</span> EdgeInsets.all(<span class="number">20.0</span>),</span><br><span class="line">              child: Storyline(movie.storyline),</span><br><span class="line">            ),</span><br><span class="line">            PhotoScroller(movie.photoUrls),</span><br><span class="line">            SizedBox(height: <span class="number">20.0</span>),</span><br><span class="line">            ActorScroller(movie.actors),</span><br><span class="line">            SizedBox(height: <span class="number">50.0</span>),</span><br><span class="line">          ],</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>尽管这个页面包含在一个脚手架中，但我们这里不使用AppBar，因为我们想要展示我们的电影背景。主体是一个<code>Column</code>控件用来垂直地堆叠我们的主要的控件。最后，整个被包裹在<code>SingleChildScrollView</code>控件中。对于垂直方向上的边距，我们使用<code>SizedBoxes</code>配合<code>height</code>属性来实现我们想要的间距。</p>
+<p>让我们一个个浏览每个组件，看看他们是由什么构成的。</p>
+<h4 id="MovieDetailHeader-电影详情页面头部"><a href="#MovieDetailHeader-电影详情页面头部" class="headerlink" title="MovieDetailHeader 电影详情页面头部"></a>MovieDetailHeader 电影详情页面头部</h4><p>这个<code>MovieDetailHeader</code>是一个简单的<code>Stack</code>控件，包含了两个子控件。<code>Stack</code>是这样的一个容器，子控件能够相互在其上面堆叠地进行布局。第一个子控件是圆弧形背景图像，第二个是<code>Row</code>控件，包含了海报以及电影的相关信息。</p>
+<p><img src="/2019/01/03/从设计到Flutter-1-电影明细页面/header_stack_arc_info_breakdown.png" alt=""></p>
+<p>因为原模型设计是将电影横幅部分地覆盖在电影信息上，我们在这里使用了一个小技巧:<code>ArcBannerImage</code>的底部填充间距140.0。</p>
+<p>这只是延伸了底部可用的空间，因此我们可以部分地将横幅与电影信息覆盖起来。如果没有这个技巧，电影信息就会被放在整个横幅的顶部，从而产生一个相当丑陋的效果:</p>
+<p><img src="/2019/01/03/从设计到Flutter-1-电影明细页面/header_without_bottom_padding.png" alt=""></p>
+<p>我们使用<code>Positioned</code>控件来将我们的电影信息固定在底部。电影信息行包含了两项：电影海报和关于电影进一步的明细信息（这是一个<code>Column</code>控件）。</p>
+<p><code>movie_detail_header.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/arc_banner_image.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/models.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/poster.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:movie_details_ui/rating_information.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MovieDetailHeader</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  MovieDetailHeader(<span class="keyword">this</span>.movie);</span><br><span class="line">  <span class="keyword">final</span> Movie movie;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">List</span>&lt;Widget&gt; _buildCategoryChips(TextTheme textTheme) &#123;</span><br><span class="line">    <span class="keyword">return</span> movie.categories.map((category) &#123;</span><br><span class="line">      <span class="keyword">return</span> Padding(</span><br><span class="line">        padding: <span class="keyword">const</span> EdgeInsets.only(right: <span class="number">8.0</span>),</span><br><span class="line">        child: Chip(</span><br><span class="line">          label: Text(category),</span><br><span class="line">          labelStyle: textTheme.caption,</span><br><span class="line">          backgroundColor: Colors.black12,</span><br><span class="line">        ),</span><br><span class="line">      );</span><br><span class="line">    &#125;).toList();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">var</span> textTheme = Theme.of(context).textTheme;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> movieInformation = Column(</span><br><span class="line">      crossAxisAlignment: CrossAxisAlignment.start,</span><br><span class="line">      children: [</span><br><span class="line">        Text(</span><br><span class="line">          movie.title,</span><br><span class="line">          style: textTheme.title,</span><br><span class="line">        ),</span><br><span class="line">        SizedBox(height: <span class="number">8.0</span>),</span><br><span class="line">        RatingInformation(movie),</span><br><span class="line">        SizedBox(height: <span class="number">12.0</span>),</span><br><span class="line">        Row(children: _buildCategoryChips(textTheme)),</span><br><span class="line">      ],</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Stack(</span><br><span class="line">      children: [</span><br><span class="line">        Padding(</span><br><span class="line">          padding: <span class="keyword">const</span> EdgeInsets.only(bottom: <span class="number">140.0</span>),</span><br><span class="line">          child: ArcBannerImage(movie.bannerUrl),</span><br><span class="line">        ),</span><br><span class="line">        Positioned(</span><br><span class="line">          bottom: <span class="number">0.0</span>,</span><br><span class="line">          left: <span class="number">16.0</span>,</span><br><span class="line">          right: <span class="number">16.0</span>,</span><br><span class="line">          child: Row(</span><br><span class="line">            crossAxisAlignment: CrossAxisAlignment.end,</span><br><span class="line">            mainAxisAlignment: MainAxisAlignment.end,</span><br><span class="line">            children: [</span><br><span class="line">              Poster(</span><br><span class="line">                movie.posterUrl,</span><br><span class="line">                height: <span class="number">180.0</span>,</span><br><span class="line">              ),</span><br><span class="line">              SizedBox(width: <span class="number">16.0</span>),</span><br><span class="line">              Expanded(child: movieInformation),</span><br><span class="line">            ],</span><br><span class="line">          ),</span><br><span class="line">        ),</span><br><span class="line">      ],</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个<code>Column</code>控件包含了三个部分（子控件）：电影标题，电影评分，电影分类。</p>
+<p>有一点需要注意的是，我们这里使用了<code>Expanded</code>控件，否则，如果电影名过长将会被剪切掉，此外还在左边添加了一些填充，这样海报和电影信息就不会紧紧挨着了。</p>
+<h4 id="ArcBannerImage-圆弧横幅图片"><a href="#ArcBannerImage-圆弧横幅图片" class="headerlink" title="ArcBannerImage 圆弧横幅图片"></a>ArcBannerImage 圆弧横幅图片</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/02/更为整洁的Flutter-UI代码的技巧/" rel="next" title="更为整洁的Flutter UI代码的技巧">
+                <i class="fa fa-chevron-left"></i> 更为整洁的Flutter UI代码的技巧
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/" rel="prev" title="在Flutter中使用贝塞尔曲线裁剪小部件">
+                在Flutter中使用贝塞尔曲线裁剪小部件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">编号15077</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#模型"><span class="nav-number">1.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据源"><span class="nav-number">2.</span> <span class="nav-text">数据源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#我们的-main-dart-文件"><span class="nav-number">3.</span> <span class="nav-text">我们的 main.dart 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MovieDetailsPage类"><span class="nav-number">4.</span> <span class="nav-text">MovieDetailsPage类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MovieDetailHeader-电影详情页面头部"><span class="nav-number">5.</span> <span class="nav-text">MovieDetailHeader 电影详情页面头部</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ArcBannerImage-圆弧横幅图片"><span class="nav-number">6.</span> <span class="nav-text">ArcBannerImage 圆弧横幅图片</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">编号15077</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="flutter, dart">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="英文地址：Clipping widgets with bezier curves in Flutter 在本篇博文中，我将探究如何使用贝塞尔曲线剪切图片。  源码源码在这里。 实现首先，创建一个Flutter项目，称作为wavy_image_mask，假定你已经安装了Flutter，那么你在你控制台运行flutter create wavy_image_mask，使用IntelliJ IDEA打开">
+<meta name="keywords" content="flutter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Flutter中使用贝塞尔曲线裁剪小部件">
+<meta property="og:url" content="http://yoursite.com/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/index.html">
+<meta property="og:site_name" content="Camera&#39;s Blog">
+<meta property="og:description" content="英文地址：Clipping widgets with bezier curves in Flutter 在本篇博文中，我将探究如何使用贝塞尔曲线剪切图片。  源码源码在这里。 实现首先，创建一个Flutter项目，称作为wavy_image_mask，假定你已经安装了Flutter，那么你在你控制台运行flutter create wavy_image_mask，使用IntelliJ IDEA打开">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/wave_clip_result.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/wavy_image_mask_folder_structure.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/coffee_bottom_clip_part_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/coffee_bottom_clip_points.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/wave_clip_result.png">
+<meta property="og:updated_time" content="2019-01-04T05:29:34.549Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Flutter中使用贝塞尔曲线裁剪小部件">
+<meta name="twitter:description" content="英文地址：Clipping widgets with bezier curves in Flutter 在本篇博文中，我将探究如何使用贝塞尔曲线剪切图片。  源码源码在这里。 实现首先，创建一个Flutter项目，称作为wavy_image_mask，假定你已经安装了Flutter，那么你在你控制台运行flutter create wavy_image_mask，使用IntelliJ IDEA打开">
+<meta name="twitter:image" content="http://yoursite.com/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/wave_clip_result.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/">
+
+
+
+
+
+  <title>在Flutter中使用贝塞尔曲线裁剪小部件 | Camera's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Camera's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="编号15077">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Camera's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">在Flutter中使用贝塞尔曲线裁剪小部件</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-04T13:29:34+08:00">
+                2019-01-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>英文地址：<a href="https://iirokrankka.com/2017/09/04/clipping-widgets-with-bezier-curves-in-flutter/" target="_blank" rel="noopener">Clipping widgets with bezier curves in Flutter</a></p>
+<p>在本篇博文中，我将探究如何使用贝塞尔曲线剪切图片。</p>
+<p><img src="/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/wave_clip_result.png" alt=""></p>
+<h4 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h4><p>源码在<a href="https://github.com/roughike/wavy-image-mask" target="_blank" rel="noopener">这里</a>。</p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>首先，创建一个Flutter项目，称作为<em>wavy_image_mask</em>，假定你已经安装了Flutter，那么你在你控制台运行<code>flutter create wavy_image_mask</code>，使用IntelliJ IDEA打开你的项目。</p>
+<p>来让我们创建一个名为<em>WavyHeaderImage</em>的<code>StatelessWidget</code> 控件。先在<em>lib</em>目录下创建<code>wavy_header_image.dart</code>文件，现在，我们从构建方法中返回一个占位的文本控件。</p>
+<p><code>wavy_header_image.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WavyHeaderImage</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Text(<span class="string">'This is where our image will be.'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>返回<code>main</code>文件，移除flutter为你自动生成样本代码，使用刚刚创建的<em>WavyHeaderImage</em>来替换<code>Scaffold</code>主体，如下：</p>
+<p><code>main.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:wavy_image_mask/wavy_header_image.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() =&gt; runApp(MyApp());</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">'Wavy image mask'</span>,</span><br><span class="line">      theme: ThemeData(</span><br><span class="line">        primarySwatch: Colors.blue,</span><br><span class="line">      ),</span><br><span class="line">      home: MyHomePage(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyHomePage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  _MyHomePageState createState() =&gt; _MyHomePageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_MyHomePageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">MyHomePage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      body: WavyHeaderImage(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="创建标题图片"><a href="#创建标题图片" class="headerlink" title="创建标题图片"></a>创建标题图片</h4><p>现在，我需要一个好看的标题图片，我们将使用Chevanon Photography的<a href="https://www.pexels.com/photo/close-up-of-coffee-cup-on-table-312418/" target="_blank" rel="noopener">这张图片</a>。</p>
+<h5 id="在flutter添加assets"><a href="#在flutter添加assets" class="headerlink" title="在flutter添加assets"></a>在flutter添加assets</h5><p>为了引入包含一般的图片或文件，我们使用Flutter的assets系统。在我们的应用的根目录创建<em>images</em>文件夹。添加你刚才下载的<em>coffee_header.jpeg</em>到图片文件里面，你的目录结构看起来如下：</p>
+<p><img src="/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/wavy_image_mask_folder_structure.png" alt=""></p>
+<p>为了能够使得图片在我们的代码中可用访问到，我也需要在<em>pubspec.yaml</em>文件中的flutter部分中的引入assets，看起来如下所示：</p>
+<p><code>pubspec.yaml</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">name: wavy_image_mask</span><br><span class="line">description: A <span class="keyword">new</span> Flutter project.</span><br><span class="line"></span><br><span class="line">dependencies:</span><br><span class="line">  flutter:</span><br><span class="line">    sdk: flutter</span><br><span class="line"></span><br><span class="line">dev_dependencies:</span><br><span class="line">  flutter_test:</span><br><span class="line">    sdk: flutter</span><br><span class="line"></span><br><span class="line">flutter:</span><br><span class="line">  uses-material-design: <span class="keyword">true</span></span><br><span class="line">  assets:</span><br><span class="line">    - images/coffee_header.jpeg</span><br></pre></td></tr></table></figure>
+<p>现在我们就可以使用这张图片了。</p>
+<h5 id="制作一些波浪纹"><a href="#制作一些波浪纹" class="headerlink" title="制作一些波浪纹"></a>制作一些波浪纹</h5><p>比较笨的方法就是寻求设计师来在Photoshop中编辑我们的原始图片，创建波浪纹遮蔽。我也可以找一张使用白色绘制波浪纹的透明图片来贴在我们图像的顶部，把它固定到底部，结束一天的工作。</p>
+<p>更好的方式是我们自己裁剪图片的波浪部分。该解决方案在不同屏幕尺寸上看起来更好。我们不需要引入额外的波浪纹遮蔽图片到我们的资产中。多亏了Flutter中一组与图像相关的API，我们可以轻松的实现。</p>
+<h6 id="使用ClipPaths"><a href="#使用ClipPaths" class="headerlink" title="使用ClipPaths"></a>使用ClipPaths</h6><p>该类是我们用于在底部创建的波浪纹形状的组件是<code>ClipPath</code>组件。<code>ClipPath</code>需要两个参数：<code>clipper</code>和<code>child</code>。这个<code>clipper</code>是一个<code>CustomClipper&lt;Path&gt;</code>对象，决定了一个<code>Path</code>路径。<code>ClipPath</code>使用该路径来防止<code>child</code>组将在闭合的路径外绘制。</p>
+<p>重新在打开我们在最开始的时候创建的<code>wavy_header_image.dart</code>文件，移除占位的文本组件，用于<code>ClipPath</code>取代。</p>
+<p><em>child</em>参数一个<code>new Image.asset(&#39;image/coffee_header.jpeg&#39;)</code>。这个仅仅是从图片文件夹载入图片并显示它。对于<code>clipper</code>，我们仅仅是调用了<code>new BottomWaveClipper()</code>。我们也许在同一文件中，创建一个新类<code>BottomWaveClipper</code>。</p>
+<p>下面这个是现在应该有的：</p>
+<p><code>wavy_header_image.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WavyHeaderImage</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> ClipPath(</span><br><span class="line">      child: Image.asset(<span class="string">'images/coffee_header.jpeg'</span>),</span><br><span class="line">      clipper: BottomWaveClipper(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BottomWaveClipper</span> <span class="keyword">extends</span> <span class="title">CustomClipper</span>&lt;<span class="title">Path</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Path getClip(Size size) &#123;</span><br><span class="line">    <span class="comment">// This is where we decide what part of our image is going to be</span></span><br><span class="line">    <span class="comment">// visible. If you try to run the app now, nothing will be shown.</span></span><br><span class="line">    <span class="keyword">return</span> Path();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> shouldReclip(CustomClipper&lt;Path&gt; oldClipper) =&gt; <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="绘制路径"><a href="#绘制路径" class="headerlink" title="绘制路径"></a>绘制路径</h6><p>所有的<code>CustomClippers</code>在它们的<code>getClip</code>方法中获得一个Size参数，这个size表示传给<em>ClipPath</em>对象的<em>child</em>组件的宽度和高度。在这里，是我们想要剪切的图片的coffee图片。因为我们的<em>CustomClipper</em>使用路径来确定剪切的区域，所以我们使用Path类中的方法来绘制这个剪切区域。</p>
+<p>例如，如果我们想斜着裁剪图像的右下角，最终代码会得到下面这样的:</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Path getClip(Size size) &#123;</span><br><span class="line">    <span class="keyword">var</span> path = Path();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Draw a straight line from current point to the bottom left corner.</span></span><br><span class="line">    path.lineTo(<span class="number">0.0</span>, size.height);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Draw a straight line from current point to the top right corner.</span></span><br><span class="line">    path.lineTo(size.width, <span class="number">0.0</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Draws a straight line from current point to the first point of the path.</span></span><br><span class="line">    <span class="comment">// In this case (0, 0), since that's where the paths start by default.</span></span><br><span class="line">    path.close();</span><br><span class="line">    <span class="keyword">return</span> path;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为除了底部的波浪纹，我们不想剪切任何地方。所以，我们需要的在绘制一条线到右上角前，添加一个<code>path.lineTo(size.width,size.height)</code>。这个修改将会返回图片本身，没有任何剪切，但是设置了实际要剪切波浪纹的部分。</p>
+<p>现在我们学习了如何用路径画直线来剪辑，让我们来画波浪纹。因为波的底部垂直方向上低于于左下角的第一个点，所以我们要把这个点向上移动一点。同样的，右下角也比左下角高一点。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> path = Path();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Since the wave goes vertically lower than bottom left starting point,</span></span><br><span class="line"><span class="comment">// we'll have to make this point a little higher.</span></span><br><span class="line">path.lineTo(<span class="number">0.0</span>, size.height - <span class="number">20</span>); </span><br><span class="line"></span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span> The wavy clipping magic happens here, between the bottom left and bottom right points.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// The bottom right point also isn't at the same level as its left counterpart,</span></span><br><span class="line"><span class="comment">// so we'll adjust that one too.</span></span><br><span class="line">path.lineTo(size.width, size.height - <span class="number">40</span>);</span><br><span class="line">path.lineTo(size.width, <span class="number">0.0</span>);</span><br><span class="line">path.close();</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>这将在图像的底部创建一个轻微的夹角，如下所示：</p>
+<p><img src="/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/coffee_bottom_clip_part_1.png" alt=""></p>
+<h6 id="什么是二次贝塞尔曲线？"><a href="#什么是二次贝塞尔曲线？" class="headerlink" title="什么是二次贝塞尔曲线？"></a>什么是二次贝塞尔曲线？</h6><p>现在，我实现最终的波浪纹。为此，我们使用<code>quadraticBezierTo</code>方法，这允许我们很容易地在我们的路径上创建我们的曲线。</p>
+<p>该API极其类似于<code>lineTo</code>方法，但是相反不是给定一个坐标，我们要给两个：一个用于我们的端点，另一个用于所谓的控制点。</p>
+<p>根本上来说，我们仅是绘制一条直线到我们的端点，我们的控制点就像是磁铁一样，将路径的中间部分拉向它的方向，使我们的直线扭曲成一个曲线。</p>
+<h5 id="端点与控制"><a href="#端点与控制" class="headerlink" title="端点与控制"></a>端点与控制</h5><p>在我们这个例子中，我们需要绘制两个二次贝塞尔曲线。第一条线的控制点应该将该条线的中点向下拉。类似地，第二条线应该将该条线的中点向上拉。</p>
+<p>如果我们看下这个模型，第一条线并不完全在水平方向上的中间位置结束。同样地，第二条线的宽度比该图片的宽度的一半更宽一些。</p>
+<p>基于目前了解的这些，我们想要向下面这样排列这些端点以及控制点：</p>
+<p><img src="/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/coffee_bottom_clip_points.png" alt=""></p>
+<p>你可能会说:“这些曲线太大了!”你说得对。然而，这些红色控制点并不是曲线接触的地方，它们只会像磁铁一样吸引直线。最终的结果会非常接近模型。</p>
+<h6 id="第一条曲线"><a href="#第一条曲线" class="headerlink" title="第一条曲线"></a>第一条曲线</h6><p><code>第一条曲线</code>有下面几点可了解：</p>
+<ul>
+<li>端点在水平方向稍稍距离中点一段距离（未达到）。</li>
+<li>端点在垂直方向上稍稍高于起始点。</li>
+<li>控制点在水平方向上位于图片宽度的1/4处。</li>
+<li>控制点在垂直方向上位于图片的底部。</li>
+</ul>
+<p>基于以上这些，第一条贝塞尔曲线看起来是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var fisrtControlPoint = new Offset(size.width /4,size.heigh);</span><br><span class="line">var firstEndPoint = new Offset(size.width /2.25,size.height-30.0);</span><br><span class="line">path.quadraticBezierTo(firstControlPoint.dx,firstControlPoint.dy,firstEndPoint.dx,firstEndPoint.dy);</span><br></pre></td></tr></table></figure>
+<p>我们可以跳过创建Offset对象，可直接使用线x &amp; y 坐标，但是这里仅仅是为了可读性。这样，第一眼就能看出<code>quadraticBezierTo</code>方法的参数是什么。</p>
+<h6 id="第二条曲线"><a href="#第二条曲线" class="headerlink" title="第二条曲线"></a>第二条曲线</h6><p><code>第二条曲线</code>有下面几点可了解：</p>
+<ul>
+<li>端点在水平方向上位于图片的右边。</li>
+<li>端点在垂直方向上比第一条曲线的端点略高一点。</li>
+<li>控制点在水平方向上位于图片宽度的3/4处。</li>
+<li>控制点在垂直方向上在端点上方大约20个像素。</li>
+</ul>
+<p>伴随着一些错误和尝试，我们得到第二条曲线：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> secondControlPoint =</span><br><span class="line">    Offset(size.width - (size.width / <span class="number">3.25</span>), size.height - <span class="number">65</span>);</span><br><span class="line"><span class="keyword">var</span> secondEndPoint = Offset(size.width, size.height - <span class="number">40</span>);</span><br><span class="line">path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,</span><br><span class="line">    secondEndPoint.dx, secondEndPoint.dy);</span><br></pre></td></tr></table></figure>
+<p>最后的效果如下：</p>
+<p><img src="/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/wave_clip_result.png" alt=""></p>
+<p>下面这个是<em>WavyHeaderImage</em>组件的完整代码：</p>
+<p><code>wavy_header_image.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WavyHeaderImage</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> ClipPath(</span><br><span class="line">      child: Image.asset(<span class="string">'images/coffee_header.jpeg'</span>),</span><br><span class="line">      clipper: BottomWaveClipper(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BottomWaveClipper</span> <span class="keyword">extends</span> <span class="title">CustomClipper</span>&lt;<span class="title">Path</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Path getClip(Size size) &#123;</span><br><span class="line">    <span class="keyword">var</span> path = <span class="keyword">new</span> Path();</span><br><span class="line">    path.lineTo(<span class="number">0.0</span>, size.height - <span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> firstControlPoint = Offset(size.width / <span class="number">4</span>, size.height);</span><br><span class="line">    <span class="keyword">var</span> firstEndPoint = Offset(size.width / <span class="number">2.25</span>, size.height - <span class="number">30.0</span>);</span><br><span class="line">    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,</span><br><span class="line">        firstEndPoint.dx, firstEndPoint.dy);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> secondControlPoint =</span><br><span class="line">        Offset(size.width - (size.width / <span class="number">3.25</span>), size.height - <span class="number">65</span>);</span><br><span class="line">    <span class="keyword">var</span> secondEndPoint = Offset(size.width, size.height - <span class="number">40</span>);</span><br><span class="line">    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,</span><br><span class="line">        secondEndPoint.dx, secondEndPoint.dy);</span><br><span class="line"></span><br><span class="line">    path.lineTo(size.width, size.height - <span class="number">40</span>);</span><br><span class="line">    path.lineTo(size.width, <span class="number">0.0</span>);</span><br><span class="line">    path.close();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> path;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> shouldReclip(CustomClipper&lt;Path&gt; oldClipper) =&gt; <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/03/从设计到Flutter-1-电影明细页面/" rel="next" title="从设计到Flutter #1 - 电影明细页面">
+                <i class="fa fa-chevron-left"></i> 从设计到Flutter #1 - 电影明细页面
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">编号15077</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#源码"><span class="nav-number">1.</span> <span class="nav-text">源码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现"><span class="nav-number">2.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建标题图片"><span class="nav-number">3.</span> <span class="nav-text">创建标题图片</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在flutter添加assets"><span class="nav-number">3.1.</span> <span class="nav-text">在flutter添加assets</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#制作一些波浪纹"><span class="nav-number">3.2.</span> <span class="nav-text">制作一些波浪纹</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#使用ClipPaths"><span class="nav-number">3.2.1.</span> <span class="nav-text">使用ClipPaths</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#绘制路径"><span class="nav-number">3.2.2.</span> <span class="nav-text">绘制路径</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#什么是二次贝塞尔曲线？"><span class="nav-number">3.2.3.</span> <span class="nav-text">什么是二次贝塞尔曲线？</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#端点与控制"><span class="nav-number">3.3.</span> <span class="nav-text">端点与控制</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#第一条曲线"><span class="nav-number">3.3.1.</span> <span class="nav-text">第一条曲线</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#第二条曲线"><span class="nav-number">3.3.2.</span> <span class="nav-text">第二条曲线</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">编号15077</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
