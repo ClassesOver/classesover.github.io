@@ -250,6 +250,175 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/05/夹层蛋糕一样的Flutter/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="编号15077">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Camera's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/05/夹层蛋糕一样的Flutter/" itemprop="url">夹层蛋糕一样的Flutter</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-05T10:18:17+08:00">
+                2019-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>英文地址：<a href="https://medium.com/flutter-community/the-layer-cake-widgets-elements-renderobjects-7644c3142401" target="_blank" rel="noopener">The Layer Cake</a></p>
+<p>Flutter 是一个极棒的UI框架，能够让你愉悦地以光速构建优美的用户界面。仅仅写下几行代码，点击保存[神奇地插入进去，亚秒级别的热重载]。你的应用能运行的十分流畅，能达到120fps的速度。然而，你是否询问过自己为何Flutter如此之快？它的秘方是什么？或者Flutter实际上是如何工作的？那么，别再去找其他的了！饮一杯新鲜的茶或咖啡，继续往下阅读吧。</p>
+<p>也许你可能听说过Flutter全部都是关于组件的。你的应用是一个组件，一个text是一个组件，包裹组件的padding也是一个组件，你甚至可以通过一个小部件识别手势。好吧，这不是全部的事实，假若我告诉你widgets让Flutter的开发又快又简单，但是你也可以甚至不需要使用一个小部件来构建一个完整的Flutter应用程序的话。让我们更深入地研究这个框架去了解它。</p>
+<h4 id="四层结构（The-Four-Layers）"><a href="#四层结构（The-Four-Layers）" class="headerlink" title="四层结构（The Four Layers）"></a>四层结构（The Four Layers）</h4><p>也许你在一些”Flutter简介“中已经知道了Flutter架构的概述。但是不知怎么的，你当时还准备好去理解这这些不同层次背后强大的概念。也许你和我一样，只是盯着那个被投放到墙上的幻灯片中抽象的图表看了20秒。不用担心，我来帮忙，请看下图：</p>
+<p><img src="/2019/01/05/夹层蛋糕一样的Flutter/the_four_layer.png" alt=""></p>
+<center><font color="grey">flutter不同的层次结构,更多信息前往<a src="https://flutter.io/docs/resources/technical-overview">https://flutter.io/docs/resources/technical-overview</a></font></center>
+
+<p>Flutter 本身包含了很多抽象层次：最顶层通常使用 Material 和 Cupertino 组件，接着是更加通用的 Widget 层，大多数情况下，你使用的大多数组件都来自该两层，这是完全没问题的。你可能已经见过（使用过）这个繁多的组件中一些（Material库中的<u>FloatingActionButton</u>和<u>Scaffold</u>，或来自widgets库中的<u>Column</u>和<u>GestureDetector</u>）组件的概率是很高的，这些都是十分常用的。</p>
+<p>在往下，是渲染层简化了布局和绘制的处理过程，是对底层的dart:ui库另一种抽象。dart:ui是dart最后一层，主要处理与flutter引擎的通信。</p>
+<p>简单地可以这样说，较高层次更容易处理一些，但是较低层级提供更细粒度的控制，并增加了复杂性。</p>
+<h5 id="dart-ui库"><a href="#dart-ui库" class="headerlink" title="dart:ui库"></a>dart:ui库</h5><blockquote>
+<p><em>dart:ui 库提供了为flutter框架一些用于引导应用程序的底层服务，诸如这些：驱动输入，图形文本，布局，渲染子系统。</em>    </p>
+</blockquote>
+<p>所以从根本上来将，你可以仅仅通过实例化<strong>dart:ui</strong>库的相关类来编写“Flutter 应用”（例如：<u><code>Canvas</code></u>，<u><code>Paint</code></u>，和 <u>TextBox</u>）。然而，如果你对直接在canvas上绘画熟悉的话，你就会知道，除了绘制一幅静止的简笔人物画之外，任何事情都是难以处理的。且之后，不仅要考虑到绘图，还要考虑编排布局以及点击测试应用程序的元素。</p>
+<h4 id="把它们放在一起（Putting-it-all-Together）"><a href="#把它们放在一起（Putting-it-all-Together）" class="headerlink" title="把它们放在一起（Putting it all Together）"></a>把它们放在一起（Putting it all Together）</h4><p><u><code>RenderObjects</code></u>是如何连接到</p>
+<p>目前我们正在构建的应用程序非常简单。它只由三个stateless组件构成：<code>SimpleApp</code>，<code>SimpleContainer</code>，<code>SimpleText</code>，那么当我们将它传入给Flutter的<code>runApp(SimpleApp())方法的时候发生了什么？</code></p>
+<p>当第一个调用<u><code>runApp</code></u>的时候，在后台发生了很多事情：</p>
+<ol>
+<li>Flutter 将会构建组件树，包含了我们的三个stateless组件。</li>
+<li>Flutter 该组件树向下并通过调用组件的<u><code>createElement()</code></u>来创建第二颗树，包含了对应的元素对象。</li>
+<li>创建第三课树，使用恰当的<code>RenderOjbects</code>来进行填充，这些是通过对用组件上的元素触发<u><code>createRenderObject()</code></u>创建的。</li>
+</ol>
+<p>下面是在Flutter经过上面描述的三个步骤的现况图：</p>
+<p><img src="/2019/01/05/夹层蛋糕一样的Flutter/trees.png" alt=""></p>
+<p>Flutter框架创建了三个不同的树结构：组件树，元素树，渲染对象树。每个<code>Element</code>保存了对<code>Widget</code>和<code>RenderObject</code>的引用，你可能会有疑问：“我知道组件，但是什么是元素和渲染对象呢？”。</p>
+<p>这个<code>RenderObject</code>包含了对应实际组件的所有的渲染逻辑，实例化开销是十分大的。它负责布局，绘制，点击测试。尽可能最好将这些对象保存在内存中，可能话的甚至能够重复利用他们（因为实例化开销很大）。从根本上讲，元素是不可变的<code>Widget</code>和可变的<code>RenderObject</code> 的粘合剂。<code>Elements</code>主要是这些这样的对象，擅长两个对象之间的对比。在这里，使widget和render对象。它们表示使用一个组件配置在树结构中特定的位置，同时也保存了相关组件和渲染对象的引用。</p>
+<p><em>为什么使用三颗树而不是使用一颗树使一个好主意呢？</em>简而言之，就是性能。每次组件树发生变化，Flutter就是使用<code>Element</code>树来比对比新的组件树和已经存在的<code>RenderObjects</code>。当一个组件的类型与之前是相同的。Flutter没必要重新创建新的开销昂贵的<code>RenderObject</code>，仅仅是更它可变的信息。因为<code>Widgets</code>是非常轻量的，实例化开销不大，也十分适合描述当前的状态（也被称作配置）。这个“笨重”的<code>RenderObjects</code>不是每次都会重新创建，尽可能重用，正如Simon所指出的，“The whole app acts like a huge RecyclerView”（整个应用程序就像一个巨大的可重复利用视图）。</p>
+<p>然而，在框架中，这些元素被很好的抽象掉了，所以你不必经常处理他们。在每个<code>build(BuildContext context)</code>方法中传入的<code>BuildContext</code>实际上就是对应的封装的<code>Element</code>，被封装到了<code>BuildContext</code>接口，这就是为什么每单个组件的不同的原因。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/04/在Flutter中使用贝塞尔曲线裁剪小部件/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -823,7 +992,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/02/在Flutter应用程序中分离构建环境/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/02/在flutter应用程序中分离构建环境/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="编号15077">
@@ -842,7 +1011,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/02/在Flutter应用程序中分离构建环境/" itemprop="url">在Flutter应用程序中分离构建环境</a></h2>
+                <a class="post-title-link" href="/2019/01/02/在flutter应用程序中分离构建环境/" itemprop="url">在Flutter应用程序中分离构建环境</a></h2>
         
 
         <div class="post-meta">
@@ -1247,7 +1416,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
