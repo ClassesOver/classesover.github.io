@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="flutter, dart">
+  <meta name="keywords" content="Deep Dive,">
 
 
 
@@ -79,15 +79,22 @@
 
 
 
-<meta name="keywords" content="flutter">
+<meta name="description" content="文本框介绍（Introduction to TextField）TextField组件允许收集用户的信息，TextField基本的代码简单的如下： 1TextField() 这个创建一个基本的TextField：  从文本框检索信息（Retrieving information from a TextField）由于文本框在Android中没有ID，所以文本不能按需索引，相反在更改时保存到一个变量">
+<meta name="keywords" content="Deep Dive">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入学习Flutter之TextField">
 <meta property="og:url" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/index.html">
 <meta property="og:site_name" content="Camera&#39;s Blog">
+<meta property="og:description" content="文本框介绍（Introduction to TextField）TextField组件允许收集用户的信息，TextField基本的代码简单的如下： 1TextField() 这个创建一个基本的TextField：  从文本框检索信息（Retrieving information from a TextField）由于文本框在Android中没有ID，所以文本不能按需索引，相反在更改时保存到一个变量">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-08T13:59:39.223Z">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/basic_textfield.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/textfield_autofocus.gif">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/custom_focus_node.gif">
+<meta property="og:updated_time" content="2019-01-08T15:20:24.822Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入学习Flutter之TextField">
+<meta name="twitter:description" content="文本框介绍（Introduction to TextField）TextField组件允许收集用户的信息，TextField基本的代码简单的如下： 1TextField() 这个创建一个基本的TextField：  从文本框检索信息（Retrieving information from a TextField）由于文本框在Android中没有ID，所以文本不能按需索引，相反在更改时保存到一个变量">
+<meta name="twitter:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/basic_textfield.png">
 
 
 
@@ -290,6 +297,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -317,7 +346,40 @@
       
 
       
-        
+        <h4 id="文本框介绍（Introduction-to-TextField）"><a href="#文本框介绍（Introduction-to-TextField）" class="headerlink" title="文本框介绍（Introduction to TextField）"></a>文本框介绍（Introduction to TextField）</h4><p><code>TextField</code>组件允许收集用户的信息，<code>TextField</code>基本的代码简单的如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TextField()</span><br></pre></td></tr></table></figure>
+<p>这个创建一个基本的<code>TextField</code>：</p>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/basic_textfield.png" alt=""></p>
+<h4 id="从文本框检索信息（Retrieving-information-from-a-TextField）"><a href="#从文本框检索信息（Retrieving-information-from-a-TextField）" class="headerlink" title="从文本框检索信息（Retrieving information from a TextField）"></a>从文本框检索信息（Retrieving information from a TextField）</h4><p>由于文本框在Android中没有ID，所以文本不能按需索引，相反在更改时保存到一个变量中，或使用一个控制器。</p>
+<ol>
+<li><p>最简单的方法是使用<strong>onChanged</strong>方法并将当前值存储在一个简单的变量中。下面是它的示例代码:</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> value = <span class="string">""</span>;</span><br><span class="line">TextField(</span><br><span class="line">    onChanged: (text) &#123;</span><br><span class="line">        value = text;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第二种方式是使用<strong>TextEditingController</strong>，这个控制被附加在该文本框中，监听同时控制文本框的文本。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TextEditingController controller = TextEditingController();</span><br><span class="line">TextField(</span><br><span class="line">	controller: controller,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>使用下面代码来监听变化：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">controller.addListener(() &#123;</span><br><span class="line">    // Do something here</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>获取/设置值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(controller.text);</span><br><span class="line">controller.text = &quot;Demo Text&quot;;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="文本框其他回调-（Other-callbacks-from-the-TextField）"><a href="#文本框其他回调-（Other-callbacks-from-the-TextField）" class="headerlink" title="文本框其他回调 （Other callbacks from the TextField）"></a>文本框其他回调 （Other callbacks from the TextField）</h4><p>该组件也提供其他回调，诸如：</p>
+<ol>
+<li>onEditingCompleted</li>
+<li>onSubmitted</li>
+</ol>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">onEditingComplete: () &#123;&#125;,</span><br><span class="line">onSubmitted: (value) &#123;&#125;,</span><br></pre></td></tr></table></figure>
+<p>这些回调在像这些动作上调用，如当用户在iOS上点击“done”按钮。</p>
+<h4 id="在文本框中使用焦点（Working-with-focus-in-TextFields）"><a href="#在文本框中使用焦点（Working-with-focus-in-TextFields）" class="headerlink" title="在文本框中使用焦点（Working with focus in TextFields）"></a>在文本框中使用焦点（Working with focus in TextFields）</h4><p>“焦点”存在文本框上，意味着文本框处于活跃状态，键盘上任何键入将会将数据输入到焦点文本框中。</p>
+<h5 id="1-使用自动获取焦点"><a href="#1-使用自动获取焦点" class="headerlink" title="1.使用自动获取焦点"></a>1.使用自动获取焦点</h5><p>为了在组件创建的时候，文本框自动获取焦点，设置<code>autofocus</code>为<code>true</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">	autofocus: <span class="keyword">true</span>,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>这默认将焦点设置在文本框上。</p>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/textfield_autofocus.gif" alt=""></p>
+<h5 id="2-使用自定义的焦点变化"><a href="#2-使用自定义的焦点变化" class="headerlink" title="2.使用自定义的焦点变化"></a>2.使用自定义的焦点变化</h5><p>如果我们想按需变更焦点而不是自动获取焦点，该如何做呢？因为我们需要以某种方式来引用下一个我们想要获取焦点的文本框，我们需要附加一个<code>FocusNode</code>到<code>TextField</code>中，用它来进行切换焦点。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Initialise outside the build method</span></span><br><span class="line">FocusNode nodeOne = FocusNode();</span><br><span class="line">FocusNode nodeTwo = FocusNode();</span><br><span class="line"><span class="comment">// Do this inside the build method</span></span><br><span class="line">TextField(</span><br><span class="line">  focusNode: nodeOne,</span><br><span class="line">),</span><br><span class="line">TextField(</span><br><span class="line">  focusNode: nodeTwo,</span><br><span class="line">),</span><br><span class="line">RaisedButton(</span><br><span class="line">  onPressed: () &#123;</span><br><span class="line">    FocusScope.of(context).requestFocus(nodeTwo);</span><br><span class="line">  &#125;,</span><br><span class="line">  child: Text(<span class="string">"Next Field"</span>),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>我们创建了两个焦点节点，并将它们附加到文本框中。当按钮按下的时候，我们使用<code>FocusScope</code>来请求下一个文本框获取焦点。</p>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/custom_focus_node.gif" alt=""></p>
+<h4 id="更改文本框的键盘属性"><a href="#更改文本框的键盘属性" class="headerlink" title="更改文本框的键盘属性"></a>更改文本框的键盘属性</h4>
       
     </div>
     
@@ -331,6 +393,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Dive/" rel="tag"># Deep Dive</a>
+          
+        </div>
       
 
       
@@ -401,8 +469,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -435,6 +512,15 @@
             
 
             
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
 
           </nav>
 
@@ -453,6 +539,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#文本框介绍（Introduction-to-TextField）"><span class="nav-number">1.</span> <span class="nav-text">文本框介绍（Introduction to TextField）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从文本框检索信息（Retrieving-information-from-a-TextField）"><span class="nav-number">2.</span> <span class="nav-text">从文本框检索信息（Retrieving information from a TextField）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本框其他回调-（Other-callbacks-from-the-TextField）"><span class="nav-number">3.</span> <span class="nav-text">文本框其他回调 （Other callbacks from the TextField）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在文本框中使用焦点（Working-with-focus-in-TextFields）"><span class="nav-number">4.</span> <span class="nav-text">在文本框中使用焦点（Working with focus in TextFields）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-使用自动获取焦点"><span class="nav-number">4.1.</span> <span class="nav-text">1.使用自动获取焦点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-使用自定义的焦点变化"><span class="nav-number">4.2.</span> <span class="nav-text">2.使用自定义的焦点变化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更改文本框的键盘属性"><span class="nav-number">5.</span> <span class="nav-text">更改文本框的键盘属性</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
