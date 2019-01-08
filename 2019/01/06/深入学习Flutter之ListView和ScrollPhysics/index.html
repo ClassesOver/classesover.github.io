@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="flutter, dart">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="英文地址：Flutter ListView and ScrollPhysics: A Detailed Look 探究ListView的类型 我们将先查看listview的类型，然后查看它的其他特性和整洁性修改。 列表视图的类型：  ListView ListView.builder ListView.separated ListView.custom  ListView这个是ListView类的">
+<meta name="keywords" content="flutter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入学习Flutter之ListView和ScrollPhysics">
+<meta property="og:url" content="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/index.html">
+<meta property="og:site_name" content="Camera&#39;s Blog">
+<meta property="og:description" content="英文地址：Flutter ListView and ScrollPhysics: A Detailed Look 探究ListView的类型 我们将先查看listview的类型，然后查看它的其他特性和整洁性修改。 列表视图的类型：  ListView ListView.builder ListView.separated ListView.custom  ListView这个是ListView类的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview.gif">
+<meta property="og:image" content="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_builder.gif">
+<meta property="og:image" content="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_builder_no_itemCount.gif">
+<meta property="og:image" content="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_separated.gif">
+<meta property="og:image" content="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_separated_adv.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/bouncing_scroll_physics.gif">
+<meta property="og:image" content="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/clamping_scroll_physics.gif">
+<meta property="og:image" content="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/fixed_extent_scroll_physics.gif">
+<meta property="og:image" content="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_builder_args.png">
+<meta property="og:updated_time" content="2019-01-08T15:36:39.019Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入学习Flutter之ListView和ScrollPhysics">
+<meta name="twitter:description" content="英文地址：Flutter ListView and ScrollPhysics: A Detailed Look 探究ListView的类型 我们将先查看listview的类型，然后查看它的其他特性和整洁性修改。 列表视图的类型：  ListView ListView.builder ListView.separated ListView.custom  ListView这个是ListView类的">
+<meta name="twitter:image" content="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/">
+
+
+
+
+
+  <title>深入学习Flutter之ListView和ScrollPhysics | Camera's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Camera's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="编号15077">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Camera's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">深入学习Flutter之ListView和ScrollPhysics</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-06T18:21:33+08:00">
+                2019-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>英文地址：<a href="https://medium.com/flutter-community/flutter-listview-and-scrollphysics-a-detailed-look-7f0912df2754" target="_blank" rel="noopener">Flutter ListView and ScrollPhysics: A Detailed Look</a></p>
+<h4 id="探究ListView的类型"><a href="#探究ListView的类型" class="headerlink" title="探究ListView的类型"></a>探究ListView的类型</h4><p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview.png" alt=""></p>
+<p>我们将先查看listview的类型，然后查看它的其他特性和整洁性修改。</p>
+<p>列表视图的类型：</p>
+<ol>
+<li><strong>ListView</strong></li>
+<li><strong>ListView.builder</strong></li>
+<li><strong>ListView.separated</strong></li>
+<li><strong>ListView.custom</strong></li>
+</ol>
+<h5 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h5><p>这个是ListView类的默认构造函数，仅仅接收children列表就能够实现滚动效果。</p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview.gif" alt=""></p>
+<p>代码一般格式如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ListView(</span><br><span class="line">  children: &lt;Widget&gt;[</span><br><span class="line">    ItemOne(),</span><br><span class="line">    ItemTwo(),</span><br><span class="line">    ItemThree(),</span><br><span class="line">  ],</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>通常，这适用于少量子组件的使用，因为列表也将会构建不可见的元素，而渲染大量的元素会影响性能效率。</p>
+<h5 id="ListView-builder"><a href="#ListView-builder" class="headerlink" title="ListView.builder()"></a>ListView.builder()</h5><p>这个<code>builder()</code>构造函数来构造重复性的列表项，这个构造函数有两个主要的参数：<strong>itemCount</strong>(列表项个数)，<strong>itemBuilder</strong>用于构建具体每个列表项目。</p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_builder.gif" alt=""></p>
+<p>代码一般格式如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ListView.builder(</span><br><span class="line">  itemCount: itemCount,</span><br><span class="line">  itemBuilder: (context, position) &#123;</span><br><span class="line">    <span class="keyword">return</span> listItem();</span><br><span class="line">  &#125;,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>这些列表项是惰性构造的，意味着只会构造特定数量的列表项，当用户向前滚动时，之前的列表项就会被销毁。</p>
+<p><strong>(巧妙的技巧)Neat trick：</strong>因为这些元素是惰性载入的，仅有被需要数量的元素被载入进去。我们可以不必需要<code>itemCount</code>作为一个强制参数，这样列表将会是无限的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ListView.builder(</span><br><span class="line">  itemBuilder: (context, position) &#123;</span><br><span class="line">    return Card(</span><br><span class="line">      child: Padding(</span><br><span class="line">        padding: const EdgeInsets.all(16.0),</span><br><span class="line">        child: Text(position.toString(), style: TextStyle(fontSize: 22.0),),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_builder_no_itemCount.gif" alt=""></p>
+<h5 id="ListView-separated"><a href="#ListView-separated" class="headerlink" title="ListView.separated()"></a>ListView.separated()</h5><p>在<code>separated()</code>构造函数中，我将会生成一个列表，并且我们可以指定列表项之间的分隔符。</p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_separated.gif" alt=""></p>
+<p>本质上，我们构造了两个交织的列表，一个作为主列表，另一个作为分割列表。</p>
+<p>注意，上面的构造函数谈及的无限数量的列表项不能在这里使用，这个构造函数强制需要一个<code>itemCount</code>参数。</p>
+<p>代码的一般格式如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ListView.separated(</span><br><span class="line">    itemBuilder: (context,position) &#123;</span><br><span class="line">        <span class="keyword">return</span> ListItem();</span><br><span class="line">    &#125;</span><br><span class="line">    separatorBuilder: (context,position) &#123;</span><br><span class="line">        <span class="keyword">return</span> SeparationItem();</span><br><span class="line">    &#125;,</span><br><span class="line">    itemCount: itemCount,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>这种类型的列表允许你动态构造分割符，不同类型的列表项，可拥有不同的分隔符，按需添加/移除分割符等等。</p>
+<p>此实现可以轻松插入其他类型的元素（例如：广告），而无需修改这些列表项中间的主列表。</p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_separated_adv.png" alt=""></p>
+<p>注意:分隔符列表长度比这些列表项少1个，因为在最后一个元素之后不存在分隔符。</p>
+<h5 id="ListView-custom"><a href="#ListView-custom" class="headerlink" title="ListView.custom()"></a>ListView.custom()</h5><p>这个<code>custom()</code>构造函数如其名，允许你使用定义功能（这些列表中的子组件是如何构建的）来构建<code>ListView</code>。为此，所必须的主要参数是一个<code>SliverChildDelegate</code>，用于构建这些列表项目。</p>
+<p><code>SliverChildDelegate</code>的类型如下：</p>
+<ol>
+<li><strong>SliverChildListDelegate</strong></li>
+<li><strong>SliverChildBuilderDelegate</strong></li>
+</ol>
+<p><code>SliverChildListDelegate</code>直接接收一个<code>children</code>列表，而<code>SliverChildBuilderDelegate</code>接收一个<code>IndexedWidgetBuilder</code>（我们使用的<code>builder</code>函数）。</p>
+<p>您可以使用或继承它们来构建自己的委托。</p>
+<p><strong>ListView.builder本质上是ListView.custom使用一个SilverChildBuilderDelegate</strong>。</p>
+<p><strong>ListView默认构造函数的行为类似于ListView.custom使用一个SliverChildListDelegate</strong>。</p>
+<h4 id="探究滚动原理"><a href="#探究滚动原理" class="headerlink" title="探究滚动原理"></a>探究滚动原理</h4><p>为了控制滚动的发生方式，我们在<code>ListView</code>构造函数设置<code>physics</code>参数，类型如下：</p>
+<h5 id="NeverScrollablePhysics"><a href="#NeverScrollablePhysics" class="headerlink" title="NeverScrollablePhysics"></a>NeverScrollablePhysics</h5><p>使用这个，将会完全禁用滚动。</p>
+<h5 id="BouncingScrollPhysics"><a href="#BouncingScrollPhysics" class="headerlink" title="BouncingScrollPhysics"></a>BouncingScrollPhysics</h5><p>在列表结束的时候会有一个反弹效果，iOS上也是使用了类似的效果。</p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/bouncing_scroll_physics.gif" alt=""></p>
+<h5 id="ClampingScrollPhysics"><a href="#ClampingScrollPhysics" class="headerlink" title="ClampingScrollPhysics"></a>ClampingScrollPhysics</h5><p>这是Android上使用的默认scrolling physics。列表在末尾停止，并给出一个指示它的效果。</p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/clamping_scroll_physics.gif" alt=""></p>
+<h5 id="FixedExtentScrollPhysics"><a href="#FixedExtentScrollPhysics" class="headerlink" title="FixedExtentScrollPhysics"></a>FixedExtentScrollPhysics</h5><p>这个稍微与其他的不同，这个仅对<code>FixedExtendScrollControllers</code>和使用它们的列表有效。例如，我们将以<code>ListWheelScrollView</code>为例，它生成一个具有滚轮效果的列表。</p>
+<p><code>FixedExtentScrollPhysics</code>只会滚动到项，而不会是其之间的任何偏移量。</p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/fixed_extent_scroll_physics.gif" alt=""></p>
+<p>这个例子的代码非常简单:</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">FixedExtentScrollController fixedExtentScrollController =</span><br><span class="line">    <span class="keyword">new</span> FixedExtentScrollController();</span><br><span class="line">ListWheelScrollView(</span><br><span class="line">  controller: fixedExtentScrollController,</span><br><span class="line">  physics: FixedExtentScrollPhysics(),</span><br><span class="line">  children: monthsOfTheYear.map((month) &#123;</span><br><span class="line">    <span class="keyword">return</span> Card(</span><br><span class="line">        child: Row(</span><br><span class="line">      children: &lt;Widget&gt;[</span><br><span class="line">        Expanded(</span><br><span class="line">            child: Padding(</span><br><span class="line">          padding: <span class="keyword">const</span> EdgeInsets.all(<span class="number">8.0</span>),</span><br><span class="line">          child: Text(</span><br><span class="line">            month,</span><br><span class="line">            style: TextStyle(fontSize: <span class="number">18.0</span>),</span><br><span class="line">          ),</span><br><span class="line">        )),</span><br><span class="line">      ],</span><br><span class="line">    ));</span><br><span class="line">  &#125;).toList(),</span><br><span class="line">  itemExtent: <span class="number">60.0</span>,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<h4 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h4><p>如何使列表中被销毁的元素保持活动状态?</p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_builder_args.png" alt=""></p>
+<p>Flutter提供了一个<code>KeepAlive()</code>小部件，该小部件使一个本来会被销毁的项保持活跃状态。在列表中，元素默认被包装在<code>AutomaticKeepAlive</code>小部件中。</p>
+<p>可以通过将<code>addAutomaticKeepAlives</code>字段设置为<code>false</code>来禁用<code>AutomaticKeepAlives</code>。这在不需要保持元素活跃或自定义<code>KeepAlive</code>实现的情况下非常有用。</p>
+<p>为什么我的列表视图在列表和外部小部件之间存在空隙?？</p>
+<p>默认情况下，ListView与外部小部件之间有填充，要移除它，将填充设置为<code>EdgeInset.all(0.0)</code>。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/06/PageView和BottomNavigationBar结合使用/" rel="next" title="PageView和BottomNavigationBar结合使用">
+                <i class="fa fa-chevron-left"></i> PageView和BottomNavigationBar结合使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/08/深入学习Flutter之TextField/" rel="prev" title="深入学习Flutter之TextField">
+                深入学习Flutter之TextField <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">编号15077</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#探究ListView的类型"><span class="nav-number">1.</span> <span class="nav-text">探究ListView的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ListView"><span class="nav-number">1.1.</span> <span class="nav-text">ListView</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ListView-builder"><span class="nav-number">1.2.</span> <span class="nav-text">ListView.builder()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ListView-separated"><span class="nav-number">1.3.</span> <span class="nav-text">ListView.separated()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ListView-custom"><span class="nav-number">1.4.</span> <span class="nav-text">ListView.custom()</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#探究滚动原理"><span class="nav-number">2.</span> <span class="nav-text">探究滚动原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#NeverScrollablePhysics"><span class="nav-number">2.1.</span> <span class="nav-text">NeverScrollablePhysics</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BouncingScrollPhysics"><span class="nav-number">2.2.</span> <span class="nav-text">BouncingScrollPhysics</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ClampingScrollPhysics"><span class="nav-number">2.3.</span> <span class="nav-text">ClampingScrollPhysics</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#FixedExtentScrollPhysics"><span class="nav-number">2.4.</span> <span class="nav-text">FixedExtentScrollPhysics</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更多"><span class="nav-number">3.</span> <span class="nav-text">更多</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">编号15077</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

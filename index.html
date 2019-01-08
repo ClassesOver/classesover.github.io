@@ -376,7 +376,18 @@
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Initialise outside the build method</span></span><br><span class="line">FocusNode nodeOne = FocusNode();</span><br><span class="line">FocusNode nodeTwo = FocusNode();</span><br><span class="line"><span class="comment">// Do this inside the build method</span></span><br><span class="line">TextField(</span><br><span class="line">  focusNode: nodeOne,</span><br><span class="line">),</span><br><span class="line">TextField(</span><br><span class="line">  focusNode: nodeTwo,</span><br><span class="line">),</span><br><span class="line">RaisedButton(</span><br><span class="line">  onPressed: () &#123;</span><br><span class="line">    FocusScope.of(context).requestFocus(nodeTwo);</span><br><span class="line">  &#125;,</span><br><span class="line">  child: Text(<span class="string">"Next Field"</span>),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
 <p>我们创建了两个焦点节点，并将它们附加到文本框中。当按钮按下的时候，我们使用<code>FocusScope</code>来请求下一个文本框获取焦点。</p>
 <p><img src="/2019/01/08/深入学习Flutter之TextField/custom_focus_node.gif" alt=""></p>
-<h4 id="更改文本框的键盘属性"><a href="#更改文本框的键盘属性" class="headerlink" title="更改文本框的键盘属性"></a>更改文本框的键盘属性</h4>
+<h4 id="更改文本框的键盘属性"><a href="#更改文本框的键盘属性" class="headerlink" title="更改文本框的键盘属性"></a>更改文本框的键盘属性</h4><p>Flutter中的<code>TextField</code>允许您定制与键盘相关的属性。</p>
+<h5 id="1-Keyboard-Type"><a href="#1-Keyboard-Type" class="headerlink" title="1. Keyboard Type"></a>1. Keyboard Type</h5><p><code>TextField</code>允许你自定义<strong>keyboard</strong>的类型，当<code>TextField</code>进入焦点中时显示。我们可以向下面这样变更<code>keyboardType</code>属性。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  keyboardType: TextInputType.number,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>其类型包括：</p>
+<ol>
+<li><strong>TextInputType.text</strong> (Normal complete keyboard)</li>
+<li><strong>TextInputType.number</strong> (A numerical keyboard)</li>
+<li><strong>TextInputType.emailAddress</strong> (Normal keyboard with an “@”)</li>
+<li><strong>TextInputType.datetime</strong> (Numerical keyboard with a “/” and “:”)</li>
+<li><strong>TextInputType.multiline</strong> (Numerical keyboard with options to enabled signed and decimal mode)</li>
+</ol>
+<h5 id="2-TextInputAction"><a href="#2-TextInputAction" class="headerlink" title="2.TextInputAction"></a>2.TextInputAction</h5>
           
         
       
@@ -424,7 +435,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/06/深入学习Flutter之列表视图及滚动原理/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="编号15077">
@@ -443,7 +454,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/06/深入学习Flutter之列表视图及滚动原理/" itemprop="url">深入学习Flutter之列表视图及滚动原理</a></h2>
+                <a class="post-title-link" href="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/" itemprop="url">深入学习Flutter之ListView和ScrollPhysics</a></h2>
         
 
         <div class="post-meta">
@@ -518,7 +529,7 @@
         
           
             <p>英文地址：<a href="https://medium.com/flutter-community/flutter-listview-and-scrollphysics-a-detailed-look-7f0912df2754" target="_blank" rel="noopener">Flutter ListView and ScrollPhysics: A Detailed Look</a></p>
-<h4 id="探究ListView的类型"><a href="#探究ListView的类型" class="headerlink" title="探究ListView的类型"></a>探究ListView的类型</h4><p><img src="/2019/01/06/深入学习Flutter之列表视图及滚动原理/listview.png" alt=""></p>
+<h4 id="探究ListView的类型"><a href="#探究ListView的类型" class="headerlink" title="探究ListView的类型"></a>探究ListView的类型</h4><p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview.png" alt=""></p>
 <p>我们将先查看listview的类型，然后查看它的其他特性和整洁性修改。</p>
 <p>列表视图的类型：</p>
 <ol>
@@ -528,27 +539,27 @@
 <li><strong>ListView.custom</strong></li>
 </ol>
 <h5 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h5><p>这个是ListView类的默认构造函数，仅仅接收children列表就能够实现滚动效果。</p>
-<p><img src="/2019/01/06/深入学习Flutter之列表视图及滚动原理/listview.gif" alt=""></p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview.gif" alt=""></p>
 <p>代码一般格式如下：</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ListView(</span><br><span class="line">  children: &lt;Widget&gt;[</span><br><span class="line">    ItemOne(),</span><br><span class="line">    ItemTwo(),</span><br><span class="line">    ItemThree(),</span><br><span class="line">  ],</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
 <p>通常，这适用于少量子组件的使用，因为列表也将会构建不可见的元素，而渲染大量的元素会影响性能效率。</p>
 <h5 id="ListView-builder"><a href="#ListView-builder" class="headerlink" title="ListView.builder()"></a>ListView.builder()</h5><p>这个<code>builder()</code>构造函数来构造重复性的列表项，这个构造函数有两个主要的参数：<strong>itemCount</strong>(列表项个数)，<strong>itemBuilder</strong>用于构建具体每个列表项目。</p>
-<p><img src="/2019/01/06/深入学习Flutter之列表视图及滚动原理/listview_builder.gif" alt=""></p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_builder.gif" alt=""></p>
 <p>代码一般格式如下：</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ListView.builder(</span><br><span class="line">  itemCount: itemCount,</span><br><span class="line">  itemBuilder: (context, position) &#123;</span><br><span class="line">    <span class="keyword">return</span> listItem();</span><br><span class="line">  &#125;,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
 <p>这些列表项是惰性构造的，意味着只会构造特定数量的列表项，当用户向前滚动时，之前的列表项就会被销毁。</p>
 <p><strong>(巧妙的技巧)Neat trick：</strong>因为这些元素是惰性载入的，仅有被需要数量的元素被载入进去。我们可以不必需要<code>itemCount</code>作为一个强制参数，这样列表将会是无限的。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ListView.builder(</span><br><span class="line">  itemBuilder: (context, position) &#123;</span><br><span class="line">    return Card(</span><br><span class="line">      child: Padding(</span><br><span class="line">        padding: const EdgeInsets.all(16.0),</span><br><span class="line">        child: Text(position.toString(), style: TextStyle(fontSize: 22.0),),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/01/06/深入学习Flutter之列表视图及滚动原理/listview_builder_no_itemCount.gif" alt=""></p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_builder_no_itemCount.gif" alt=""></p>
 <h5 id="ListView-separated"><a href="#ListView-separated" class="headerlink" title="ListView.separated()"></a>ListView.separated()</h5><p>在<code>separated()</code>构造函数中，我将会生成一个列表，并且我们可以指定列表项之间的分隔符。</p>
-<p><img src="/2019/01/06/深入学习Flutter之列表视图及滚动原理/listview_separated.gif" alt=""></p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_separated.gif" alt=""></p>
 <p>本质上，我们构造了两个交织的列表，一个作为主列表，另一个作为分割列表。</p>
 <p>注意，上面的构造函数谈及的无限数量的列表项不能在这里使用，这个构造函数强制需要一个<code>itemCount</code>参数。</p>
 <p>代码的一般格式如下：</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ListView.separated(</span><br><span class="line">    itemBuilder: (context,position) &#123;</span><br><span class="line">        <span class="keyword">return</span> ListItem();</span><br><span class="line">    &#125;</span><br><span class="line">    separatorBuilder: (context,position) &#123;</span><br><span class="line">        <span class="keyword">return</span> SeparationItem();</span><br><span class="line">    &#125;,</span><br><span class="line">    itemCount: itemCount,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 <p>这种类型的列表允许你动态构造分割符，不同类型的列表项，可拥有不同的分隔符，按需添加/移除分割符等等。</p>
 <p>此实现可以轻松插入其他类型的元素（例如：广告），而无需修改这些列表项中间的主列表。</p>
-<p><img src="/2019/01/06/深入学习Flutter之列表视图及滚动原理/listview_separated_adv.png" alt=""></p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_separated_adv.png" alt=""></p>
 <p>注意:分隔符列表长度比这些列表项少1个，因为在最后一个元素之后不存在分隔符。</p>
 <h5 id="ListView-custom"><a href="#ListView-custom" class="headerlink" title="ListView.custom()"></a>ListView.custom()</h5><p>这个<code>custom()</code>构造函数如其名，允许你使用定义功能（这些列表中的子组件是如何构建的）来构建<code>ListView</code>。为此，所必须的主要参数是一个<code>SliverChildDelegate</code>，用于构建这些列表项目。</p>
 <p><code>SliverChildDelegate</code>的类型如下：</p>
@@ -563,16 +574,16 @@
 <h4 id="探究滚动原理"><a href="#探究滚动原理" class="headerlink" title="探究滚动原理"></a>探究滚动原理</h4><p>为了控制滚动的发生方式，我们在<code>ListView</code>构造函数设置<code>physics</code>参数，类型如下：</p>
 <h5 id="NeverScrollablePhysics"><a href="#NeverScrollablePhysics" class="headerlink" title="NeverScrollablePhysics"></a>NeverScrollablePhysics</h5><p>使用这个，将会完全禁用滚动。</p>
 <h5 id="BouncingScrollPhysics"><a href="#BouncingScrollPhysics" class="headerlink" title="BouncingScrollPhysics"></a>BouncingScrollPhysics</h5><p>在列表结束的时候会有一个反弹效果，iOS上也是使用了类似的效果。</p>
-<p><img src="/2019/01/06/深入学习Flutter之列表视图及滚动原理/bouncing_scroll_physics.gif" alt=""></p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/bouncing_scroll_physics.gif" alt=""></p>
 <h5 id="ClampingScrollPhysics"><a href="#ClampingScrollPhysics" class="headerlink" title="ClampingScrollPhysics"></a>ClampingScrollPhysics</h5><p>这是Android上使用的默认scrolling physics。列表在末尾停止，并给出一个指示它的效果。</p>
-<p><img src="/2019/01/06/深入学习Flutter之列表视图及滚动原理/clamping_scroll_physics.gif" alt=""></p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/clamping_scroll_physics.gif" alt=""></p>
 <h5 id="FixedExtentScrollPhysics"><a href="#FixedExtentScrollPhysics" class="headerlink" title="FixedExtentScrollPhysics"></a>FixedExtentScrollPhysics</h5><p>这个稍微与其他的不同，这个仅对<code>FixedExtendScrollControllers</code>和使用它们的列表有效。例如，我们将以<code>ListWheelScrollView</code>为例，它生成一个具有滚轮效果的列表。</p>
 <p><code>FixedExtentScrollPhysics</code>只会滚动到项，而不会是其之间的任何偏移量。</p>
-<p><img src="/2019/01/06/深入学习Flutter之列表视图及滚动原理/fixed_extent_scroll_physics.gif" alt=""></p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/fixed_extent_scroll_physics.gif" alt=""></p>
 <p>这个例子的代码非常简单:</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">FixedExtentScrollController fixedExtentScrollController =</span><br><span class="line">    <span class="keyword">new</span> FixedExtentScrollController();</span><br><span class="line">ListWheelScrollView(</span><br><span class="line">  controller: fixedExtentScrollController,</span><br><span class="line">  physics: FixedExtentScrollPhysics(),</span><br><span class="line">  children: monthsOfTheYear.map((month) &#123;</span><br><span class="line">    <span class="keyword">return</span> Card(</span><br><span class="line">        child: Row(</span><br><span class="line">      children: &lt;Widget&gt;[</span><br><span class="line">        Expanded(</span><br><span class="line">            child: Padding(</span><br><span class="line">          padding: <span class="keyword">const</span> EdgeInsets.all(<span class="number">8.0</span>),</span><br><span class="line">          child: Text(</span><br><span class="line">            month,</span><br><span class="line">            style: TextStyle(fontSize: <span class="number">18.0</span>),</span><br><span class="line">          ),</span><br><span class="line">        )),</span><br><span class="line">      ],</span><br><span class="line">    ));</span><br><span class="line">  &#125;).toList(),</span><br><span class="line">  itemExtent: <span class="number">60.0</span>,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
 <h4 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h4><p>如何使列表中被销毁的元素保持活动状态?</p>
-<p><img src="/2019/01/06/深入学习Flutter之列表视图及滚动原理/listview_builder_args.png" alt=""></p>
+<p><img src="/2019/01/06/深入学习Flutter之ListView和ScrollPhysics/listview_builder_args.png" alt=""></p>
 <p>Flutter提供了一个<code>KeepAlive()</code>小部件，该小部件使一个本来会被销毁的项保持活跃状态。在列表中，元素默认被包装在<code>AutomaticKeepAlive</code>小部件中。</p>
 <p>可以通过将<code>addAutomaticKeepAlives</code>字段设置为<code>false</code>来禁用<code>AutomaticKeepAlives</code>。这在不需要保持元素活跃或自定义<code>KeepAlive</code>实现的情况下非常有用。</p>
 <p>为什么我的列表视图在列表和外部小部件之间存在空隙?？</p>
