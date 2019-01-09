@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Deep Dive,">
+  <meta name="keywords" content="flutter, dart">
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="文本框介绍（Introduction to TextField）TextField组件允许收集用户的信息，TextField基本的代码简单的如下： 1TextField() 这个创建一个基本的TextField：  从文本框检索信息（Retrieving information from a TextField）由于文本框在Android中没有ID，所以文本不能按需索引，相反在更改时保存到一个变量">
-<meta name="keywords" content="Deep Dive">
+<meta name="keywords" content="flutter">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入学习Flutter之TextField">
 <meta property="og:url" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/index.html">
@@ -90,7 +90,28 @@
 <meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/basic_textfield.png">
 <meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/textfield_autofocus.gif">
 <meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/custom_focus_node.gif">
-<meta property="og:updated_time" content="2019-01-08T15:30:07.394Z">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/text_input_action_continue.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/text_input_action_send.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/sentence_cap.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/char_cap.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/first_letter_cap.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/text_algin_center.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/text_field_style.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/text_field_cursor.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/max_chars.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/maxlines.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/maxlines_direct_value.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/obscure_text.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/hint.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/label.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/icon.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/prefix_icon.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/prefix_general.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/hint_style.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/helper_text.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/remove_underline.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/08/深入学习Flutter之TextField/text_field_border.png">
+<meta property="og:updated_time" content="2019-01-09T14:12:58.330Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入学习Flutter之TextField">
 <meta name="twitter:description" content="文本框介绍（Introduction to TextField）TextField组件允许收集用户的信息，TextField基本的代码简单的如下： 1TextField() 这个创建一个基本的TextField：  从文本框检索信息（Retrieving information from a TextField）由于文本框在Android中没有ID，所以文本不能按需索引，相反在更改时保存到一个变量">
@@ -371,16 +392,16 @@
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">onEditingComplete: () &#123;&#125;,</span><br><span class="line">onSubmitted: (value) &#123;&#125;,</span><br></pre></td></tr></table></figure>
 <p>这些回调在像这些动作上调用，如当用户在iOS上点击“done”按钮。</p>
 <h4 id="在文本框中使用焦点（Working-with-focus-in-TextFields）"><a href="#在文本框中使用焦点（Working-with-focus-in-TextFields）" class="headerlink" title="在文本框中使用焦点（Working with focus in TextFields）"></a>在文本框中使用焦点（Working with focus in TextFields）</h4><p>“焦点”存在文本框上，意味着文本框处于活跃状态，键盘上任何键入将会将数据输入到焦点文本框中。</p>
-<h5 id="1-使用自动获取焦点"><a href="#1-使用自动获取焦点" class="headerlink" title="1.使用自动获取焦点"></a>1.使用自动获取焦点</h5><p>为了在组件创建的时候，文本框自动获取焦点，设置<code>autofocus</code>为<code>true</code>。</p>
+<h5 id="使用自动获取焦点"><a href="#使用自动获取焦点" class="headerlink" title="使用自动获取焦点"></a>使用自动获取焦点</h5><p>为了在组件创建的时候，文本框自动获取焦点，设置<code>autofocus</code>为<code>true</code>。</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">	autofocus: <span class="keyword">true</span>,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
 <p>这默认将焦点设置在文本框上。</p>
 <p><img src="/2019/01/08/深入学习Flutter之TextField/textfield_autofocus.gif" alt=""></p>
-<h5 id="2-使用自定义的焦点变化"><a href="#2-使用自定义的焦点变化" class="headerlink" title="2.使用自定义的焦点变化"></a>2.使用自定义的焦点变化</h5><p>如果我们想按需变更焦点而不是自动获取焦点，该如何做呢？因为我们需要以某种方式来引用下一个我们想要获取焦点的文本框，我们需要附加一个<code>FocusNode</code>到<code>TextField</code>中，用它来进行切换焦点。</p>
+<h5 id="使用自定义的焦点变化"><a href="#使用自定义的焦点变化" class="headerlink" title="使用自定义的焦点变化"></a>使用自定义的焦点变化</h5><p>如果我们想按需变更焦点而不是自动获取焦点，该如何做呢？因为我们需要以某种方式来引用下一个我们想要获取焦点的文本框，我们需要附加一个<code>FocusNode</code>到<code>TextField</code>中，用它来进行切换焦点。</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Initialise outside the build method</span></span><br><span class="line">FocusNode nodeOne = FocusNode();</span><br><span class="line">FocusNode nodeTwo = FocusNode();</span><br><span class="line"><span class="comment">// Do this inside the build method</span></span><br><span class="line">TextField(</span><br><span class="line">  focusNode: nodeOne,</span><br><span class="line">),</span><br><span class="line">TextField(</span><br><span class="line">  focusNode: nodeTwo,</span><br><span class="line">),</span><br><span class="line">RaisedButton(</span><br><span class="line">  onPressed: () &#123;</span><br><span class="line">    FocusScope.of(context).requestFocus(nodeTwo);</span><br><span class="line">  &#125;,</span><br><span class="line">  child: Text(<span class="string">"Next Field"</span>),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
 <p>我们创建了两个焦点节点，并将它们附加到文本框中。当按钮按下的时候，我们使用<code>FocusScope</code>来请求下一个文本框获取焦点。</p>
 <p><img src="/2019/01/08/深入学习Flutter之TextField/custom_focus_node.gif" alt=""></p>
-<h4 id="更改文本框的键盘属性"><a href="#更改文本框的键盘属性" class="headerlink" title="更改文本框的键盘属性"></a>更改文本框的键盘属性</h4><p>Flutter中的<code>TextField</code>允许您定制与键盘相关的属性。</p>
-<h5 id="1-Keyboard-Type"><a href="#1-Keyboard-Type" class="headerlink" title="1. Keyboard Type"></a>1. Keyboard Type</h5><p><code>TextField</code>允许你自定义<strong>keyboard</strong>的类型，当<code>TextField</code>进入焦点中时显示。我们可以向下面这样变更<code>keyboardType</code>属性。</p>
+<h4 id="更改文本框的键盘属性（Changing-Keyboard-Properties-for-TextFields）"><a href="#更改文本框的键盘属性（Changing-Keyboard-Properties-for-TextFields）" class="headerlink" title="更改文本框的键盘属性（Changing Keyboard Properties for TextFields）"></a>更改文本框的键盘属性（Changing Keyboard Properties for TextFields）</h4><p>Flutter中的<code>TextField</code>允许您定制与键盘相关的属性。</p>
+<h5 id="Keyboard-Type"><a href="#Keyboard-Type" class="headerlink" title="Keyboard Type"></a>Keyboard Type</h5><p><code>TextField</code>允许你自定义<strong>keyboard</strong>的类型，当<code>TextField</code>进入焦点中时显示。我们可以向下面这样变更<code>keyboardType</code>属性。</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  keyboardType: TextInputType.number,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
 <p>其类型包括：</p>
 <ol>
@@ -390,7 +411,87 @@
 <li><strong>TextInputType.datetime</strong> (Numerical keyboard with a “/” and “:”)</li>
 <li><strong>TextInputType.multiline</strong> (Numerical keyboard with options to enabled signed and decimal mode)</li>
 </ol>
-<h5 id="2-TextInputAction"><a href="#2-TextInputAction" class="headerlink" title="2.TextInputAction"></a>2.TextInputAction</h5>
+<h5 id="TextInputAction"><a href="#TextInputAction" class="headerlink" title="TextInputAction"></a>TextInputAction</h5><p>变更<code>TextField</code>的<code>textInputAction</code>会让你改变<strong>键盘本身的动作按钮</strong>。</p>
+<p>例如：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  textInputAction: TextInputAction.continueAction,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>这会导致“Done”按钮被“Continue”按钮替换。</p>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/text_input_action_continue.png" alt=""></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  textInputAction: TextInputAction.send,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>这会导致“Done”按钮被“Send”按钮替换。</p>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/text_input_action_send.png" alt=""></p>
+<p>完整的列表太大，不能在这里显示，但是一定要检查它。</p>
+<h5 id="Autocorrect"><a href="#Autocorrect" class="headerlink" title="Autocorrect"></a>Autocorrect</h5><p>启用或禁用对特定<code>TextField</code>的自动更正。使用<code>autocorrect</code>进行设置。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  autocorrect: <span class="keyword">false</span>,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>这也将禁用建议提示。</p>
+<h5 id="Text-Capitalization"><a href="#Text-Capitalization" class="headerlink" title="Text Capitalization"></a>Text Capitalization</h5><p><code>TextField</code>提供了一些选项用于关于如何输入中大写用户输入的字母。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  textCapitalization: TextCapitalization.sentences,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>类型包括：</p>
+<ol>
+<li><p><strong>TextCapitalization.sentences</strong></p>
+<p>这是我们预计的正常的大写形式，每个句子的首字母都要大写。</p>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/sentence_cap.png" alt=""></p>
+</li>
+<li><p><strong>TextCapitalization.characters</strong></p>
+<p>所有字符大写。</p>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/char_cap.png" alt=""></p>
+</li>
+<li><p><strong>TextCapitalization.words</strong></p>
+<p>每个单词的首字母大写。</p>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/first_letter_cap.png" alt=""></p>
+</li>
+</ol>
+<h4 id="文本样式，对齐以及光标选项（Text-Style-Alignment-and-Cursor-Options）"><a href="#文本样式，对齐以及光标选项（Text-Style-Alignment-and-Cursor-Options）" class="headerlink" title="文本样式，对齐以及光标选项（Text Style, Alignment and Cursor Options）"></a>文本样式，对齐以及光标选项（Text Style, Alignment and Cursor Options）</h4><p>Flutter允许<code>TextField</code>中的文本样式，文对齐方式，以及光标进行自定义。</p>
+<h5 id="文本对齐"><a href="#文本对齐" class="headerlink" title="文本对齐"></a>文本对齐</h5><p>使用<code>textAligin</code>属性在光标在<code>TextField</code>在哪里显示。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  textAlign: TextAlign.center,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>这会导致光标和文本在文本框的中间显示。</p>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/text_algin_center.png" alt=""></p>
+<h5 id="文本样式"><a href="#文本样式" class="headerlink" title="文本样式"></a>文本样式</h5><p>使用<code>style</code>属性来更改文本的外观样式，使用它变更颜色，字体大小，这个类似于<code>Text</code>组件的<code>style</code>属性。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  style: TextStyle(color: Colors.red, fontWeight: FontWeight.w300),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/text_field_style.png" alt=""></p>
+<h5 id="自定义光标"><a href="#自定义光标" class="headerlink" title="自定义光标"></a>自定义光标</h5><p>在<code>TextField</code>组件中是可以直接自定义的。</p>
+<p>允许你改变光标的颜色，宽度，边框角的弧度。例如，这里弄了一个圆形的红色光标。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  cursorColor: Colors.red,</span><br><span class="line">  cursorRadius: Radius.circular(<span class="number">16.0</span>),</span><br><span class="line">  cursorWidth: <span class="number">16.0</span>,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/text_field_cursor.png" alt=""></p>
+<h4 id="控制大小和最大长度（Controlling-the-Size-and-Maximum-Length-in-a-TextField）"><a href="#控制大小和最大长度（Controlling-the-Size-and-Maximum-Length-in-a-TextField）" class="headerlink" title="控制大小和最大长度（Controlling the Size and Maximum Length in a TextField）"></a>控制大小和最大长度（Controlling the Size and Maximum Length in a TextField）</h4><p>可以控制<code>TextField</code>中写入的最大字符数、最大行数，以及在输入文本时展开。</p>
+<h5 id="控制最大字符数"><a href="#控制最大字符数" class="headerlink" title="控制最大字符数"></a>控制最大字符数</h5><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  maxLength: <span class="number">4</span>,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/max_chars.png" alt=""></p>
+<p>通过设置maxLength属性，将强制最大长度，并在默认情况下向<code>TextField</code>添加计数器。</p>
+<h5 id="可伸缩的文本框"><a href="#可伸缩的文本框" class="headerlink" title="可伸缩的文本框"></a>可伸缩的文本框</h5><p>某些时候，我们需要一个<code>TextField</code>在一行结束的时候能够扩展。这个在Flutter有点奇怪，但是很简单。为此，我们设置<code>maxLines</code>为<code>null</code>，默认是1。我们不太习惯设置<code>null</code>，但不过很容易搞定。</p>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/maxlines.png" alt=""></p>
+<p>注意:将maxLines设置为一个直接值，默认情况下会将展开到指定的行数。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  maxLines: <span class="number">3</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/maxlines_direct_value.png" alt=""></p>
+<h4 id="模糊文本-（Obscuring-Text）"><a href="#模糊文本-（Obscuring-Text）" class="headerlink" title="模糊文本 （Obscuring Text）"></a>模糊文本 （Obscuring Text）</h4><p>为了模糊文本，设置<code>obscureText</code>为<code>true</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  obscureText: <span class="keyword">true</span>,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/obscure_text.png" alt=""></p>
+<h4 id="最后，装饰文本框（And-Finally-Decorating-the-TextField）"><a href="#最后，装饰文本框（And-Finally-Decorating-the-TextField）" class="headerlink" title="最后，装饰文本框（And Finally, Decorating the TextField）"></a>最后，装饰文本框（And Finally, Decorating the TextField）</h4><p>Flutter为了装饰<code>TextField</code>，我们使用<code>decoration</code>属性，接收一个<code>InputDecoration</code>。因为这个<code>InputDecoration</code>类很庞大，让我们尝试快速浏览其大部分重要的属性。</p>
+<h5 id="使用hint和label属性向用户提供信息提示"><a href="#使用hint和label属性向用户提供信息提示" class="headerlink" title="使用hint和label属性向用户提供信息提示"></a>使用hint和label属性向用户提供信息提示</h5><p><code>hint</code>和<code>label</code>均为字符串，用于帮助用户理解输入到文本框的信息。不同的是一旦用户开始输入，<code>hint</code>会消失，而标签将会向上浮动。</p>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/hint.png" alt=""></p>
+<center><font size="2">hint</font></center>
+
+<p><img src="/2019/01/08/深入学习Flutter之TextField/label.png" alt=""></p>
+<center><font size="2">label</font></center>
+
+<h5 id="使用“icon”，“prefixIcon”，“suffixIcon”添加图标"><a href="#使用“icon”，“prefixIcon”，“suffixIcon”添加图标" class="headerlink" title="使用“icon”，“prefixIcon”，“suffixIcon”添加图标"></a>使用“icon”，“prefixIcon”，“suffixIcon”添加图标</h5><p>你可以向<code>TextFields</code>直接添加图标，你也可以使用<code>prefixText</code>和<code>suffixText</code>添加文本。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  decoration: InputDecoration(</span><br><span class="line">    icon: Icon(Icons.<span class="built_in">print</span>)</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/icon.png" alt=""></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  decoration: InputDecoration(</span><br><span class="line">    prefixIcon: Icon(Icons.<span class="built_in">print</span>)</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/prefix_icon.png" alt=""></p>
+<h5 id="类似的其他任何组件，使用“prefix”，而非“prefixIcon”"><a href="#类似的其他任何组件，使用“prefix”，而非“prefixIcon”" class="headerlink" title="类似的其他任何组件，使用“prefix”，而非“prefixIcon”"></a>类似的其他任何组件，使用“prefix”，而非“prefixIcon”</h5><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  decoration: InputDecoration(</span><br><span class="line">    prefix: CircularProgressIndicator(),</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>为了使用通用的组件，而不是图片，应该使用<code>prefix</code>字段。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  decoration: InputDecoration(</span><br><span class="line">    prefix: CircularProgressIndicator(),</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/prefix_general.png" alt=""></p>
+<h5 id="像hint，label等等这样的属性，每个都有相应的style字段"><a href="#像hint，label等等这样的属性，每个都有相应的style字段" class="headerlink" title="像hint，label等等这样的属性，每个都有相应的style字段"></a>像hint，label等等这样的属性，每个都有相应的style字段</h5><p>为了添加<code>hint</code>样式，使用<code>hintStyle</code>，为了添加<code>label</code>样式，使用<code>labelStyle</code>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  decoration: InputDecoration(</span><br><span class="line">    hintText: <span class="string">"Demo Text"</span>,</span><br><span class="line">    hintStyle: TextStyle(fontWeight: FontWeight.w300, color: Colors.red)</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/hint_style.png" alt=""></p>
+<h5 id="如果你不想要标签，但仍为用户保留信息，使用“helperText”"><a href="#如果你不想要标签，但仍为用户保留信息，使用“helperText”" class="headerlink" title="如果你不想要标签，但仍为用户保留信息，使用“helperText”"></a>如果你不想要标签，但仍为用户保留信息，使用“helperText”</h5><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  decoration: InputDecoration(</span><br><span class="line">    helperText: <span class="string">"Hello"</span></span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/helper_text.png" alt=""></p>
+<h5 id="使用“decoration-null”或“InputDecoraion-collapsed”来移除默认下划线"><a href="#使用“decoration-null”或“InputDecoraion-collapsed”来移除默认下划线" class="headerlink" title="使用“decoration:null”或“InputDecoraion.collapsed”来移除默认下划线"></a>使用“decoration:null”或“InputDecoraion.collapsed”来移除默认下划线</h5><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  decoration: InputDecoration.collapsed(hintText: <span class="string">""</span>)</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/remove_underline.png" alt=""></p>
+<h5 id="使用“border”添加一个边框"><a href="#使用“border”添加一个边框" class="headerlink" title="使用“border”添加一个边框"></a>使用“border”添加一个边框</h5><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">  decoration: InputDecoration(</span><br><span class="line">    border: OutlineInputBorder()</span><br><span class="line">  )</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/01/08/深入学习Flutter之TextField/text_field_border.png" alt=""></p>
+<p>还有大量的修饰你可以深入去做，可是我们不能在一篇文章中讨论所有内容。但我希望这能让你清楚地了解自定义Flutter的<code>TextField</code>是多么地简单。</p>
+
       
     </div>
     
@@ -404,12 +505,6 @@
     
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Deep-Dive/" rel="tag"># Deep Dive</a>
-          
-        </div>
       
 
       
@@ -523,15 +618,6 @@
             
 
             
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">标签</span>
-                
-              </div>
-            
 
           </nav>
 
@@ -560,7 +646,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#文本框介绍（Introduction-to-TextField）"><span class="nav-number">1.</span> <span class="nav-text">文本框介绍（Introduction to TextField）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从文本框检索信息（Retrieving-information-from-a-TextField）"><span class="nav-number">2.</span> <span class="nav-text">从文本框检索信息（Retrieving information from a TextField）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本框其他回调-（Other-callbacks-from-the-TextField）"><span class="nav-number">3.</span> <span class="nav-text">文本框其他回调 （Other callbacks from the TextField）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在文本框中使用焦点（Working-with-focus-in-TextFields）"><span class="nav-number">4.</span> <span class="nav-text">在文本框中使用焦点（Working with focus in TextFields）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-使用自动获取焦点"><span class="nav-number">4.1.</span> <span class="nav-text">1.使用自动获取焦点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-使用自定义的焦点变化"><span class="nav-number">4.2.</span> <span class="nav-text">2.使用自定义的焦点变化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更改文本框的键盘属性"><span class="nav-number">5.</span> <span class="nav-text">更改文本框的键盘属性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Keyboard-Type"><span class="nav-number">5.1.</span> <span class="nav-text">1. Keyboard Type</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-TextInputAction"><span class="nav-number">5.2.</span> <span class="nav-text">2.TextInputAction</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#文本框介绍（Introduction-to-TextField）"><span class="nav-number">1.</span> <span class="nav-text">文本框介绍（Introduction to TextField）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从文本框检索信息（Retrieving-information-from-a-TextField）"><span class="nav-number">2.</span> <span class="nav-text">从文本框检索信息（Retrieving information from a TextField）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本框其他回调-（Other-callbacks-from-the-TextField）"><span class="nav-number">3.</span> <span class="nav-text">文本框其他回调 （Other callbacks from the TextField）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在文本框中使用焦点（Working-with-focus-in-TextFields）"><span class="nav-number">4.</span> <span class="nav-text">在文本框中使用焦点（Working with focus in TextFields）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用自动获取焦点"><span class="nav-number">4.1.</span> <span class="nav-text">使用自动获取焦点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用自定义的焦点变化"><span class="nav-number">4.2.</span> <span class="nav-text">使用自定义的焦点变化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更改文本框的键盘属性（Changing-Keyboard-Properties-for-TextFields）"><span class="nav-number">5.</span> <span class="nav-text">更改文本框的键盘属性（Changing Keyboard Properties for TextFields）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Keyboard-Type"><span class="nav-number">5.1.</span> <span class="nav-text">Keyboard Type</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TextInputAction"><span class="nav-number">5.2.</span> <span class="nav-text">TextInputAction</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Autocorrect"><span class="nav-number">5.3.</span> <span class="nav-text">Autocorrect</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Text-Capitalization"><span class="nav-number">5.4.</span> <span class="nav-text">Text Capitalization</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本样式，对齐以及光标选项（Text-Style-Alignment-and-Cursor-Options）"><span class="nav-number">6.</span> <span class="nav-text">文本样式，对齐以及光标选项（Text Style, Alignment and Cursor Options）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#文本对齐"><span class="nav-number">6.1.</span> <span class="nav-text">文本对齐</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文本样式"><span class="nav-number">6.2.</span> <span class="nav-text">文本样式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自定义光标"><span class="nav-number">6.3.</span> <span class="nav-text">自定义光标</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#控制大小和最大长度（Controlling-the-Size-and-Maximum-Length-in-a-TextField）"><span class="nav-number">7.</span> <span class="nav-text">控制大小和最大长度（Controlling the Size and Maximum Length in a TextField）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#控制最大字符数"><span class="nav-number">7.1.</span> <span class="nav-text">控制最大字符数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#可伸缩的文本框"><span class="nav-number">7.2.</span> <span class="nav-text">可伸缩的文本框</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模糊文本-（Obscuring-Text）"><span class="nav-number">8.</span> <span class="nav-text">模糊文本 （Obscuring Text）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最后，装饰文本框（And-Finally-Decorating-the-TextField）"><span class="nav-number">9.</span> <span class="nav-text">最后，装饰文本框（And Finally, Decorating the TextField）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用hint和label属性向用户提供信息提示"><span class="nav-number">9.1.</span> <span class="nav-text">使用hint和label属性向用户提供信息提示</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用“icon”，“prefixIcon”，“suffixIcon”添加图标"><span class="nav-number">9.2.</span> <span class="nav-text">使用“icon”，“prefixIcon”，“suffixIcon”添加图标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类似的其他任何组件，使用“prefix”，而非“prefixIcon”"><span class="nav-number">9.3.</span> <span class="nav-text">类似的其他任何组件，使用“prefix”，而非“prefixIcon”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#像hint，label等等这样的属性，每个都有相应的style字段"><span class="nav-number">9.4.</span> <span class="nav-text">像hint，label等等这样的属性，每个都有相应的style字段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如果你不想要标签，但仍为用户保留信息，使用“helperText”"><span class="nav-number">9.5.</span> <span class="nav-text">如果你不想要标签，但仍为用户保留信息，使用“helperText”</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用“decoration-null”或“InputDecoraion-collapsed”来移除默认下划线"><span class="nav-number">9.6.</span> <span class="nav-text">使用“decoration:null”或“InputDecoraion.collapsed”来移除默认下划线</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用“border”添加一个边框"><span class="nav-number">9.7.</span> <span class="nav-text">使用“border”添加一个边框</span></a></li></ol></li></ol></div>
             
 
           </div>
