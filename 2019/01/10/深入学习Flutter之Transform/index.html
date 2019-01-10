@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="flutter, dart">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="英文地址：A Deep Dive Into Transform Widgets in Flutter Transform组件简介（Introduction to the Transform widget）Transform组件在绘制自身前对它的子组件做一些转换(例如，形状，大小，位置，方向)。  这对自定义形状以及各种各样的动画极为有用，这可以转换任何组件，扭曲成任何我们喜欢的形状，或者移动它。">
+<meta name="keywords" content="flutter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入学习Flutter之Transform">
+<meta property="og:url" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/index.html">
+<meta property="og:site_name" content="Camera&#39;s Blog">
+<meta property="og:description" content="英文地址：A Deep Dive Into Transform Widgets in Flutter Transform组件简介（Introduction to the Transform widget）Transform组件在绘制自身前对它的子组件做一些转换(例如，形状，大小，位置，方向)。  这对自定义形状以及各种各样的动画极为有用，这可以转换任何组件，扭曲成任何我们喜欢的形状，或者移动它。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/distort_shape.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/rotate_container.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/default_origin.gif">
+<meta property="og:image" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/rotate_vertex.gif">
+<meta property="og:image" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/scale_container.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/scale_center.gif">
+<meta property="og:image" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/scale_vextex.gif">
+<meta property="og:image" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/translate.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/transform_skew_roate.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/skewY.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/skewX.png">
+<meta property="og:updated_time" content="2019-01-10T14:10:13.684Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入学习Flutter之Transform">
+<meta name="twitter:description" content="英文地址：A Deep Dive Into Transform Widgets in Flutter Transform组件简介（Introduction to the Transform widget）Transform组件在绘制自身前对它的子组件做一些转换(例如，形状，大小，位置，方向)。  这对自定义形状以及各种各样的动画极为有用，这可以转换任何组件，扭曲成任何我们喜欢的形状，或者移动它。">
+<meta name="twitter:image" content="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/distort_shape.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/">
+
+
+
+
+
+  <title>深入学习Flutter之Transform | Camera's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Camera's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/10/深入学习Flutter之Transform/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="编号15077">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Camera's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">深入学习Flutter之Transform</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-10T19:05:12+08:00">
+                2019-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>英文地址：<a href="https://medium.com/flutter-community/a-deep-dive-into-transform-widgets-in-flutter-4dc32cd575a9" target="_blank" rel="noopener">A Deep Dive Into Transform Widgets in Flutter</a></p>
+<h4 id="Transform组件简介（Introduction-to-the-Transform-widget）"><a href="#Transform组件简介（Introduction-to-the-Transform-widget）" class="headerlink" title="Transform组件简介（Introduction to the Transform widget）"></a>Transform组件简介（Introduction to the Transform widget）</h4><p><code>Transform</code>组件在绘制自身前对它的子组件做一些转换(例如，形状，大小，位置，方向)。</p>
+<p><img src="/2019/01/10/深入学习Flutter之Transform/distort_shape.png" alt=""></p>
+<p>这对自定义形状以及各种各样的动画极为有用，这可以转换任何组件，扭曲成任何我们喜欢的形状，或者移动它。</p>
+<h4 id="探索Transform组件的类型（Exploring-the-types-of-Transform-widget）"><a href="#探索Transform组件的类型（Exploring-the-types-of-Transform-widget）" class="headerlink" title="探索Transform组件的类型（Exploring the types of Transform widget）"></a>探索Transform组件的类型（Exploring the types of Transform widget）</h4><p>这个转换组件给我们一些构造函数帮助我们简化转换的构建。诸如缩放，旋转，平移这些常见的操作，全部可通过构造函数提供。</p>
+<p>包括如下：</p>
+<ol>
+<li><strong>Transform (默认构造函数)</strong></li>
+<li><strong>Transform.rotate</strong></li>
+<li><strong>Transform.scale</strong></li>
+<li><strong>Transform.translate</strong></li>
+</ol>
+<p>我们首先查看单一操作的构造函数。</p>
+<h5 id="Transform-rotate"><a href="#Transform-rotate" class="headerlink" title="Transform.rotate"></a>Transform.rotate</h5><p>如其名，这个仅仅是旋转子组件一定的角度，下面这个子组件是一个方形容器。</p>
+<p><img src="/2019/01/10/深入学习Flutter之Transform/rotate_container.png" alt=""></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Transform.roate(</span><br><span class="line">	angle:<span class="number">1.0</span>,</span><br><span class="line">	child:Container(</span><br><span class="line">	height:<span class="number">200.0</span>,</span><br><span class="line">	width:<span class="number">200.0</span>,</span><br><span class="line">	color:Colors.pink,</span><br><span class="line">	),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>这个<strong>angle</strong>让我们给子组件设置一个旋转角度（单位为弧度）。</p>
+<p>这个组件也允许我们指定一个我们组件旋转的方向，通过<code>origin</code>参数来指定方向，这里接收一个<code>Offset</code>，这个偏移量表示原点相对于子组件中心位置的距离。</p>
+<p>然而在我们没有（必要）显示设置这个偏移量的时候，子组件将会围绕自己中心进行旋转，默认原点是<code>Transform</code>容器的中心位置，<code>Transform</code>大小是默认子组件的大小。</p>
+<p>下面制作了一个动画，更好地可视化了旋转中心的位置。</p>
+<p><img src="/2019/01/10/深入学习Flutter之Transform/default_origin.gif" alt=""></p>
+<p>如果子组件围绕正方形（<strong>Transform</strong>）的右下角旋转，它会是这样的。</p>
+<p><img src="/2019/01/10/深入学习Flutter之Transform/rotate_vertex.gif" alt=""></p>
+<p>以上效果代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Transform.rotate(</span><br><span class="line">  angle: <span class="number">1.0</span>,</span><br><span class="line">  origin: Offset(<span class="number">50.0</span>, <span class="number">50.0</span>),</span><br><span class="line">  child: Container(</span><br><span class="line">    height: <span class="number">100.0</span>,</span><br><span class="line">    width: <span class="number">100.0</span>,</span><br><span class="line">    color: Colors.blue,</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<h5 id="Transform-scale"><a href="#Transform-scale" class="headerlink" title="Transform.scale"></a>Transform.scale</h5><p>这个<code>scale</code>构造函数根据给定的<code>scale</code>参数来缩放它的子组件。</p>
+<p><img src="/2019/01/10/深入学习Flutter之Transform/scale_container.png" alt=""></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Transform.scale(</span><br><span class="line">  scale: <span class="number">0.5</span>,</span><br><span class="line">  child: Container(</span><br><span class="line">    height: <span class="number">200.0</span>,</span><br><span class="line">    width: <span class="number">200.0</span>,</span><br><span class="line">    color: Colors.yellow,</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>这里设置<code>scale</code>为<code>0.5</code>，将会缩小容器大小为原来的一半。</p>
+<p>类似旋转变换，我们也可以设置缩放的原点。</p>
+<p>当我们不设置原点的时候，将采用<code>Transform</code>组件的中心位置。当缩放的时候，每边的变化是完全一样的。</p>
+<p><img src="/2019/01/10/深入学习Flutter之Transform/scale_center.gif" alt=""></p>
+<p>像上一个例子，现在将原点设置到右下角，如果我们重新加载我们的应用，这个组件相比默认缩放，将会发生变化。</p>
+<p><img src="/2019/01/10/深入学习Flutter之Transform/scale_vextex.gif" alt=""></p>
+<p>对应的代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Transform.scale(</span><br><span class="line">  scale: <span class="number">0.5</span>,</span><br><span class="line">  origin: Offset(<span class="number">50.0</span>, <span class="number">50.0</span>),</span><br><span class="line">  child: Container(</span><br><span class="line">    height: <span class="number">100.0</span>,</span><br><span class="line">    width: <span class="number">100.0</span>,</span><br><span class="line">    color: Colors.blue,</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<h5 id="Transform-translate"><a href="#Transform-translate" class="headerlink" title="Transform.translate"></a>Transform.translate</h5><p>在<strong>X</strong>和<strong>Y</strong>方向上以指定位移量平移子组件，仅仅提供了<code>Offset</code>参数来指定了<strong>X</strong>和<strong>Y</strong>方向上位移量。</p>
+<p><img src="/2019/01/10/深入学习Flutter之Transform/translate.png" alt=""></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Transform.translate(</span><br><span class="line">offset: Offset(<span class="number">100.0</span>, <span class="number">0.0</span>),</span><br><span class="line">  child: Container(</span><br><span class="line">    height: <span class="number">100.0</span>,</span><br><span class="line">    width: <span class="number">100.0</span>,</span><br><span class="line">    color: Colors.yellow,</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>我们不能设置平移的原点，因为平移不受原点影响。因为我们给出的是偏移量而不是坐标，所以原点意义不大。</p>
+<h5 id="Transform-Default-construct"><a href="#Transform-Default-construct" class="headerlink" title="Transform(Default construct)"></a>Transform(Default construct)</h5><p>不像以上的其他构造函数，默认的构造函数允许我们一次做多个操作，这个是最厉害的构造函数。</p>
+<p>相反不是接收一个像<code>scaling</code>或<code>angle</code>参数，这个构造函数直接接收一个<strong>4D Matrix</strong>作为<strong>transform</strong>参数，这允许我们执行多个操作。</p>
+<p>例如：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Transform(</span><br><span class="line">  transform: Matrix4.skewY(<span class="number">0.3</span>)..rotateZ(<span class="number">3.14</span> / <span class="number">12.0</span>),</span><br><span class="line">  origin: Offset(<span class="number">50.0</span>, <span class="number">50.0</span>),</span><br><span class="line">  child: Container(</span><br><span class="line">    height: <span class="number">100.0</span>,</span><br><span class="line">    width: <span class="number">100.0</span>,</span><br><span class="line">    color: Colors.blue,</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+<p>上面的代码会使子组件向<code>Y</code>倾斜<code>0.3</code>弧度，绕<code>Z</code>轴旋转<code>π/12</code>弧度。</p>
+<p><img src="/2019/01/10/深入学习Flutter之Transform/transform_skew_roate.png" alt=""></p>
+<p><code>Skew</code>实际上是将子元素倾斜到一个方向，同时保持两边平行。</p>
+<h6 id="SkewY"><a href="#SkewY" class="headerlink" title="SkewY"></a>SkewY</h6><p><img src="/2019/01/10/深入学习Flutter之Transform/skewY.png" alt=""></p>
+<h6 id="SkewX"><a href="#SkewX" class="headerlink" title="SkewX"></a>SkewX</h6><p><img src="/2019/01/10/深入学习Flutter之Transform/skewX.png" alt=""></p>
+<p><code>Matrix4</code>也能让我们设置旋转和平移。</p>
+<p>我们使用<strong>Matrix4.rotationX()</strong>，<strong>Matrix4.rotationY()</strong> 和 <strong>Matrix4.rotationZ()</strong>用于旋转，<strong>Matrix4.translation()</strong> 或<strong>Matrix4.translationValues()</strong>进行平移。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/09/基于Flutter的3D透视/" rel="next" title="基于Flutter的3D透视">
+                <i class="fa fa-chevron-left"></i> 基于Flutter的3D透视
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">编号15077</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Transform组件简介（Introduction-to-the-Transform-widget）"><span class="nav-number">1.</span> <span class="nav-text">Transform组件简介（Introduction to the Transform widget）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#探索Transform组件的类型（Exploring-the-types-of-Transform-widget）"><span class="nav-number">2.</span> <span class="nav-text">探索Transform组件的类型（Exploring the types of Transform widget）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Transform-rotate"><span class="nav-number">2.1.</span> <span class="nav-text">Transform.rotate</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Transform-scale"><span class="nav-number">2.2.</span> <span class="nav-text">Transform.scale</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Transform-translate"><span class="nav-number">2.3.</span> <span class="nav-text">Transform.translate</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Transform-Default-construct"><span class="nav-number">2.4.</span> <span class="nav-text">Transform(Default construct)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#SkewY"><span class="nav-number">2.4.1.</span> <span class="nav-text">SkewY</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#SkewX"><span class="nav-number">2.4.2.</span> <span class="nav-text">SkewX</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">编号15077</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
